@@ -1,7 +1,7 @@
 import http.server
 import pathlib
 import datetime
-from website import Website
+from .website import Website
 
 web_server = Website()
 users = []

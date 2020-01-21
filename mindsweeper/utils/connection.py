@@ -2,6 +2,22 @@ import socket
 
 class Connection:
     def __init__(self, socket):
+        pass
+    
+    def connect(host, port):
+    """"""
+        pass
+    
+    def send_message(self, data):
+    """"""
+        pass
+    
+    def receive_message():
+    """"""
+        pass
+
+class Connection:
+    def __init__(self, socket):
         self.socket = socket
         
     def __enter__(self):

@@ -1,11 +1,11 @@
 import socket
 import time
-import datetime
+import datetime    
 import struct 
 import threading
 import pathlib
 
-from cli import CommandLineInterface
+from .cli import CommandLineInterface
 
 cli = CommandLineInterface()
 
@@ -33,7 +33,7 @@ class Handler(threading.Thread):
         while len(signature) < 20:
             msg = self.connection.recv(20)
             if not msg:
-                break;
+                break
             signature += msg
         
         if len(signature) == 20:
@@ -46,7 +46,7 @@ class Handler(threading.Thread):
             while len(t) < t_len:
                 msg = self.connection.recv(t_len)
                 if not msg:
-                    break;
+                    break
                 t += msg
             t = struct.unpack('<%ds' % (t_len,), t)[0].decode()
         else:
@@ -70,14 +70,12 @@ class Handler(threading.Thread):
             print(file_path)
         finally:
             self.lock.release()
-            
-@cli.command
+
 def run(address, data):
     try:
         address = address.split(":")
         address[1] = int(address[1])
         address = tuple(address)
-        data_dir = data
         run_server(address, data)
         print('done')
     except Exception as error:

@@ -1,0 +1,1 @@
+from .mindsweeper import app
