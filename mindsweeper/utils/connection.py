@@ -2,22 +2,6 @@ import socket
 
 class Connection:
     def __init__(self, socket):
-        pass
-    
-    def connect(host, port):
-    """"""
-        pass
-    
-    def send_message(self, data):
-    """"""
-        pass
-    
-    def receive_message():
-    """"""
-        pass
-
-class Connection:
-    def __init__(self, socket):
         self.socket = socket
         
     def __enter__(self):
@@ -39,13 +23,13 @@ class Connection:
         while len(data) < size:
             m = self.socket.recv(size)
             if not m:
-                break;
+                break
             data += m
         if not len(data) == size:
             raise Exception('Error')
         return data
     
-    def connect(host, port):
+    def connect(self, host, port):
         soc = socket.socket()
         soc.connect((host, port))
         return Connection(soc)

@@ -1,3 +1,4 @@
 .env/
-.pytest-cache/
-./vscode
+.vscode/
+mindsweeper/__pycache__
+sample.mind.gz
