@@ -1,6 +1,6 @@
 import grpc
 from .protos.code import server_pb2_grpc
-from . import reader
+from .utils import reader
 
 def upload_sample(host='127.0.0.1', \
                   port=8000, \
@@ -22,9 +22,6 @@ def upload_sample(host='127.0.0.1', \
             func = stub.__dict__['Send' + type(i).__name__.replace('Message', '')]
             response = func(i)
 
-        # Close connection
-
-    pass
 
 if __name__ == '__main__':
     upload_sample(path='/home/baram/Documents/mindsweeper/sample.mind.gz')

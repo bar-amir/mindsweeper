@@ -1,4 +1,4 @@
-from .protos.code import server_pb2 as spb2
+from ..protos.code import server_pb2 as spb2
 import struct
 import gzip
 import os
