@@ -1,0 +1,2 @@
+class DepthImageParser:
+    pass

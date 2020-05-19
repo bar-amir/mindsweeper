@@ -2,3 +2,4 @@
 .vscode/
 mindsweeper/__pycache__
 sample.mind.gz
+.media/

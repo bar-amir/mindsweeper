@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+service Messenger {
+    rpc SendUser (UserMessage) returns (SendResponse);
+    rpc SendPose (PoseMessage) returns (SendResponse);
+    rpc SendColorImage (ColorImageMessage) returns (SendResponse);
+    rpc SendDepthImage (DepthImageMessage) returns (SendResponse);
+    rpc SendFeelings (FeelingsMessage) returns (SendResponse);
+}
+
+message SendResponse {
+    uint32 status_code = 1;
+}
+
+message UserMessage {
+    enum Gender {
+        MALE = 0;
+        FEMALE = 1;
+        OTHER = 2;
+    }
+    uint64 user_id = 1;
+    string username = 2;
+    uint32 birthday = 3;
+    Gender gender = 4;
+}
+
+message PoseMessage {
+    message Translation {
+        double x = 1;
+        double y = 2;
+        double z = 3;
+    }
+    message Rotation {
+        double x = 1;
+        double y = 2;
+        double z = 3;
+        double w = 4;
+    }
+    uint64 user_id = 1;
+    uint64 datetime = 2;
+    Translation translation = 3;
+    Rotation rotation = 4;
+}
+
+message ColorImageMessage {
+    uint64 user_id = 1;
+    uint64 datetime = 2;
+    uint32 width = 3;
+    uint32 height = 4;
+    bytes data = 5;
+}
+
+message DepthImageMessage {
+    uint64 user_id = 1;
+    uint64 datetime = 2;
+    uint32 width = 3;
+    uint32 height = 4;
+    repeated float data = 5;
+}
+
+message FeelingsMessage {
+    uint64 user_id = 1;
+    uint64 datetime = 2;
+    float hunger = 3;
+    float thirst = 4;
+    float exhaustion = 5;
+    float happiness = 6;
+}
