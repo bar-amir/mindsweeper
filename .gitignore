@@ -6,3 +6,6 @@
 mindsweeper/__pycache__
 sample.mind.gz
 media/*
+mindsweeper/save.pg.py
+scripts/start_over_db.py
+scripts/start.sh

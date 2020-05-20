@@ -21,3 +21,5 @@ docker run -d \
            fenglc/pgadmin4;
 
 #user: pgadmin4@pgadmin.org password: admin
+
+docker run -d -p 27017-27019:27017-27019 --name mongodb mongo:4.0.4

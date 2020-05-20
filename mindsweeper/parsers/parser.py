@@ -25,7 +25,7 @@ class Parser:
         channel.exchange_declare(exchange='mindsweeper', exchange_type='direct')
         result = channel.queue_declare(queue='', exclusive=True)
         queue_name = result.method.queue
-        channel.queue_bind(exchange='parsers',
+        channel.queue_bind(exchange='mindsweeper',
                        queue=queue_name,
                        routing_key=self.parser_func.__name__)
 

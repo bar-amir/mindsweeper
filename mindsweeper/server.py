@@ -39,11 +39,19 @@ def run_server(host='127.0.0.1', \
 
 class Messenger(server_pb2_grpc.MessengerServicer):
     def SendUser(self, request, context):
-        msg = MessageToJson(request)
-        return server_pb2.SendResponse(status_code=1)
-
-    def SendPose(self, request, context):
-        msg = MessageToJson(request)
+        msg = json.dumps({
+            'type': 'user',
+            'data': {
+                'userId': request.user_id,
+                'username': request.username,
+                'birthday': request.birthday,
+                'gender': request.gender,
+            }
+        })
+        channel.basic_publish(exchange='mindsweeper',
+                              routing_key='saver',
+                              body=msg)
+        #print(f' [x] Sent {msg}')
         return server_pb2.SendResponse(status_code=1)
 
     def SendColorImage(self, request, context):
@@ -53,16 +61,19 @@ class Messenger(server_pb2_grpc.MessengerServicer):
         f = open(file_path, 'wb+')
         f.write(request.data)
         msg = json.dumps({
-            'user_id': request.user_id,
+            'type': 'colorImage',
+            'userId'  : request.user_id,
             'datetime': request.datetime,
-            'width': request.width,
-            'height': request.height,
-            'path': file_path
+            'data': {
+                'width'   : request.width,
+                'height'  : request.height,
+                'path'    : file_path
+            }
         })
-        channel.basic_publish(exchange='parsers',
-                      routing_key='color_image',
-                      body=msg)
-        print(f' [x] Sent {msg}')
+        channel.basic_publish(exchange='mindsweeper',
+                              routing_key='color_image',
+                              body=msg)
+        #print(f' [x] Sent {msg}')
         return server_pb2.SendResponse(status_code=1)
 
     def SendDepthImage(self, request, context):
@@ -72,16 +83,31 @@ class Messenger(server_pb2_grpc.MessengerServicer):
         #f = open(bin_path + f'{request.datetime}.dat', 'wb+')
         #f.write(request.data)
         msg = json.dumps({
-            'user_id': request.user_id,
-            'datetime': request.datetime,
-            'width': request.width,
-            'height': request.height,
-            'path': file_path
+            'type': 'depthImage',
+            'data': {
+                'userId'  : request.user_id,
+                'datetime': request.datetime,
+                'width'   : request.width,
+                'height'  : request.height,
+                'path'    : file_path
+            }
         })
+        return server_pb2.SendResponse(status_code=1)
+    
+    def SendPose(self, request, context):
+        msg = MessageToJson(request)
+        channel.basic_publish(exchange='mindsweeper',
+                              routing_key='pose',
+                              body=msg)
+        #print(f' [x] Sent {msg}')
         return server_pb2.SendResponse(status_code=1)
 
     def SendFeelings(self, request, context):
         msg = MessageToJson(request)
+        channel.basic_publish(exchange='mindsweeper',
+                              routing_key='feelings',
+                              body=msg)
+        #print(f' [x] Sent {msg}')
         return server_pb2.SendResponse(status_code=1)
 
 if __name__ == '__main__':
