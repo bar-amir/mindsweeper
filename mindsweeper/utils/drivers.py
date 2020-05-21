@@ -22,8 +22,15 @@ class MessageQueue:
         for p in aux.get_parsers_list():
             self.channel.queue_declare(queue=p)
             self.channel.queue_bind(exchange='mindsweeper',
-                        queue=p,
-                        routing_key=f'{p}.unparsed')
+                                    queue=p,
+                                    routing_key=f'{p}.unparsed')
+        self.channel.queue_declare(queue='saver')
+        self.channel.queue_bind(exchange='mindsweeper',
+                                queue='saver',
+                                routing_key=f'*.parsed')
+        self.channel.queue_bind(exchange='mindsweeper',
+                                queue='saver',
+                                routing_key=f'*.uploaded')
         print(' [*] Waiting for messages. To exit press CTRL+C')
 
     def publish(self, msg):
@@ -35,10 +42,16 @@ class MessageQueue:
 
     def start_parser(self, function):
         def callback(ch, method, properties, body):
-            print(f" [x] Received raw message")
+            #print(f" [x] Received message")
             self.publish(function(bson.decode(body)))
-
         self.channel.basic_consume(queue=function.__name__, on_message_callback=callback, auto_ack=True)
+        self.channel.start_consuming()
+
+    def start_saver(self, function):
+        def callback(ch, method, properties, body):
+            #print(f" [x] Received message")
+            function(bson.decode(body))
+        self.channel.basic_consume(queue='saver', on_message_callback=callback, auto_ack=True)
         self.channel.start_consuming()
 
     def close(self):

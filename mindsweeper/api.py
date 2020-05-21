@@ -11,7 +11,11 @@ app = Flask(__name__)
 def get_users():
     result = []
     for u in db['users'].find():
-        result.append(u)
+        user = {
+            'userId': u['_id'],
+            'username': u['username']
+        }
+        result.append(user)
     return str(result)
 
 @app.route('/snapshots')
@@ -23,37 +27,38 @@ def get_snapshots():
 
 @app.route('/users/<user_id>')
 def get_user(user_id):
-    user = db['users'].find_one({'_id': int(user_id)}, {'_id': 0, 'snapshots': 0}) 
+    user = db['users'].find_one({'_id': int(user_id)}, {'snapshots': 0}) 
     gender = {
-        0: 'male',
-        1: 'female',
-        2: 'other'
+        0: 'Male',
+        1: 'Female',
+        2: 'Other'
     }
-    user = {
-        'user_id': user_id,
+    u = {
+        'userId': user['_id'],
         'username': user['username'],
         'birthday': datetime.datetime.fromtimestamp(user['birthday']).strftime('%Y-%m-%d'),
         'gender:': gender[user['gender']]
     }
-    return str(user)
+    print(u)
+    return str(u)
 
 @app.route('/users/<user_id>/snapshots')
 def get_user_snapshots(user_id):
-    snapshots = db['snapshots'].find({'userId': user_id}, {'_id': 1, 'datetime': 1}).sort('datetime')
+    snapshots = db['snapshots'].find({'userId': int(user_id)}, {'_id': 1, 'datetime': 1}).sort('datetime')
     result = []
     for s in snapshots:
         snapshot = {
-            'snapshot_id': s['_id'],
+            'snapshotId': s['_id'],
             'datetime': datetime.datetime.fromtimestamp(int(s['datetime'])/1000).strftime('%Y-%m-%d %H:%M:%S.%f')
         }
-        result.append(snapshot)
+        result.append(s)
     return str(result)
 
 @app.route('/users/<user_id>/snapshots/<snapshot_id>')
 def get_user_snapshot(user_id, snapshot_id):
     snapshot = db['snapshots'].find_one({'_id': snapshot_id})
     result = {
-        'snapshot_id': snapshot_id,
+        'snapshotId': snapshot['_id'],
         'datetime': datetime.datetime.fromtimestamp(int(snapshot['datetime'])/1000).strftime('%Y-%m-%d %H:%M:%S.%f'),
         'results': list(snapshot['results'].keys())
     }
@@ -62,7 +67,7 @@ def get_user_snapshot(user_id, snapshot_id):
 @app.route('/users/<user_id>/snapshots/<snapshot_id>/<result_name>')
 def get_result(user_id, snapshot_id, result_name):
     snapshot = db['snapshots'].find_one({'_id': snapshot_id})
-    name = aux.url_to_lower_camel(result_name)
+    name = aux.snake_to_lower_camel(result_name, '-')
     if name in snapshot['results']:
         result = snapshot['results'][name]
         if name == 'colorImage':
@@ -75,7 +80,7 @@ def get_result(user_id, snapshot_id, result_name):
 @app.route('/users/<user_id>/snapshots/<snapshot_id>/<result_name>/data')
 def get_result_data(user_id, snapshot_id, result_name):
     snapshot = db['snapshots'].find_one({'_id': snapshot_id})
-    name = aux.url_to_lower_camel(result_name)
+    name = aux.snake_to_lower_camel(result_name, '-')
     if name in snapshot['results']:
         if name == 'colorImage':
             return send_file(snapshot['results']['colorImage']['path'], mimetype='image/gif')
