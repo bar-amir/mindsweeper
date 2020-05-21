@@ -1,114 +1,66 @@
-import grpc
-from .protos.code import server_pb2
-from .protos.code import server_pb2_grpc
-import json
-from .utils import drivers as d
-from concurrent import futures
-from google.protobuf.json_format import MessageToJson
-import pika
+from .utils import drivers, aux
+import bson
+import click
 import os
+from concurrent import futures
 from pathlib import Path
+from flask import Flask, request
 
-def publish(message):
+PROJECT_ROOT = Path(os.path.dirname(os.path.dirname(__file__)))
+
+app = Flask(__name__)
+
+@click.group()
+def main():
     pass
 
+@main.command()
+@click.option('-h', '--host', default='127.0.0.1')
+@click.option('-p', '--port', default=8000)
+@click.argument('message_queue_url', nargs=1, default=None)
 def run_server(host='127.0.0.1', \
                port=8000, \
                publish=None, \
                message_queue_url=None):
-    '''listen on host:port and pass received messages to publish'''    
-    # Connect to message queue
+    '''listen on host:port and pass received messages to publish'''
     global mq
-    global channel
-    mq = d.MessageQueue(message_queue_url)
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
-    channel = connection.channel()
-    channel.exchange_declare(exchange='mindsweeper', exchange_type='direct')
-    
-    # Start listening on host:port
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10), options=[
-                                            ('grpc.max_send_message_length', 1024 ** 3),
-                                            ('grpc.max_receive_message_length', 1024 ** 3)
-                                            ])
-    server_pb2_grpc.add_MessengerServicer_to_server(Messenger(), server)
-    server.add_insecure_port(f'[::]:{port}')
-    server.start()
-    server.wait_for_termination()
-    connection.close()
+    global publish_func
+    mq = drivers.MessageQueue(message_queue_url)
+    if not publish:
+        publish_func = mq.publish
+    else:
+        publish_func = publish
+    app.run(host=host, port=port)
+    mq.close()
 
+length = 0
 
-class Messenger(server_pb2_grpc.MessengerServicer):
-    def SendUser(self, request, context):
-        msg = json.dumps({
-            'type': 'user',
-            'data': {
-                'userId': request.user_id,
-                'username': request.username,
-                'birthday': request.birthday,
-                'gender': request.gender,
-            }
-        })
-        channel.basic_publish(exchange='mindsweeper',
-                              routing_key='saver',
-                              body=msg)
-        #print(f' [x] Sent {msg}')
-        return server_pb2.SendResponse(status_code=1)
+@app.route('/upload', methods=['POST'])
+def upload():
+    msg = bson.decode(request.get_data())
+    msg_type = aux.camel_to_snake(msg['type'])
 
-    def SendColorImage(self, request, context):
-        dir_path = f'/home/baram/Documents/mindsweeper/media/color_images/{request.user_id}/bin/'
-        file_path = dir_path + f'{request.datetime}.dat'
+    if msg['type'] in ['colorImage']:
+        dir_path = PROJECT_ROOT / 'media' / 'color_images' / str(msg['userId']) / 'bin'
+        file_path = dir_path / f"{msg['datetime']}.dat"
         os.makedirs(dir_path, exist_ok=True)
         f = open(file_path, 'wb+')
-        f.write(request.data)
-        msg = json.dumps({
-            'type': 'colorImage',
-            'userId'  : request.user_id,
-            'datetime': request.datetime,
-            'data': {
-                'width'   : request.width,
-                'height'  : request.height,
-                'path'    : file_path
-            }
-        })
-        channel.basic_publish(exchange='mindsweeper',
-                              routing_key='color_image',
-                              body=msg)
-        #print(f' [x] Sent {msg}')
-        return server_pb2.SendResponse(status_code=1)
+        f.write(msg['data']['data'])
+        del msg['data']['data']
+        msg['data']['path'] = str(file_path)
+        print('saved to ', file_path)
 
-    def SendDepthImage(self, request, context):
-        dir_path = f'/home/baram/Documents/mindsweeper/media/depth_images/{request.user_id}/bin/'
-        file_path = dir_path + f'{request.datetime}.dat'
-        os.makedirs(dir_path, exist_ok=True)
-        #f = open(bin_path + f'{request.datetime}.dat', 'wb+')
-        #f.write(request.data)
-        msg = json.dumps({
-            'type': 'depthImage',
-            'data': {
-                'userId'  : request.user_id,
-                'datetime': request.datetime,
-                'width'   : request.width,
-                'height'  : request.height,
-                'path'    : file_path
-            }
-        })
-        return server_pb2.SendResponse(status_code=1)
-    
-    def SendPose(self, request, context):
-        msg = MessageToJson(request)
-        channel.basic_publish(exchange='mindsweeper',
-                              routing_key='pose',
-                              body=msg)
-        #print(f' [x] Sent {msg}')
-        return server_pb2.SendResponse(status_code=1)
+    if msg['type'] in aux.get_parsers():
+        msg['status'] = 'unparsed'
 
-    def SendFeelings(self, request, context):
-        msg = MessageToJson(request)
-        channel.basic_publish(exchange='mindsweeper',
-                              routing_key='feelings',
-                              body=msg)
-        #print(f' [x] Sent {msg}')
-        return server_pb2.SendResponse(status_code=1)
+    publish_func(msg)
+    return 'OK'
+
 
 if __name__ == '__main__':
-    run_server()
+    #def print_message(msg):
+    #    print(msg)
+    #run_server(host='127.0.0.1', port=8000, publish=print_message)
+    main()
+    
+    

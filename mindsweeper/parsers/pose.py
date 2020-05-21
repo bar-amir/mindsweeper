@@ -1,5 +1,5 @@
 import json
-from .parser import Parser
+from ..utils.parser import Parser
 
 @Parser
 def pose(request):
