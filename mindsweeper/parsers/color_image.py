@@ -1,8 +1,8 @@
 from PIL import Image
-from ..utils.parser import Parser
+from ..utils import aux
 from pathlib import Path
+import os
 
-@Parser
 def color_image(request):
     path = request['data']['path']
     f = open(path, 'rb')
@@ -15,6 +15,3 @@ def color_image(request):
     request['data']['path'] = str(new_path)
     request['status'] = 'parsed'
     return request
-
-if __name__ == '__main__':
-    color_image()

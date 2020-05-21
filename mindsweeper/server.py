@@ -6,8 +6,6 @@ from concurrent import futures
 from pathlib import Path
 from flask import Flask, request
 
-PROJECT_ROOT = Path(os.path.dirname(os.path.dirname(__file__)))
-
 app = Flask(__name__)
 
 @click.group()
@@ -40,8 +38,8 @@ def upload():
     msg = bson.decode(request.get_data())
     msg_type = aux.camel_to_snake(msg['type'])
 
-    if msg['type'] in ['colorImage']:
-        dir_path = PROJECT_ROOT / 'media' / 'color_images' / str(msg['userId']) / 'bin'
+    if msg_type in ['color_image']:
+        dir_path = aux.PROJECT_ROOT / 'media' / 'color_images' / str(msg['userId']) / 'bin'
         file_path = dir_path / f"{msg['datetime']}.dat"
         os.makedirs(dir_path, exist_ok=True)
         f = open(file_path, 'wb+')
@@ -50,7 +48,7 @@ def upload():
         msg['data']['path'] = str(file_path)
         print('saved to ', file_path)
 
-    if msg['type'] in aux.get_parsers():
+    if msg_type in aux.get_parsers_list():
         msg['status'] = 'unparsed'
 
     publish_func(msg)
@@ -58,9 +56,5 @@ def upload():
 
 
 if __name__ == '__main__':
-    #def print_message(msg):
-    #    print(msg)
-    #run_server(host='127.0.0.1', port=8000, publish=print_message)
     main()
-    
     

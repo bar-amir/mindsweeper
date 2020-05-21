@@ -8,6 +8,7 @@ from pathlib import Path
 import json
 import base64
 import click
+from . import aux
 
 class Reader:
     def __init__(self, path):
@@ -21,7 +22,7 @@ class Reader:
         self.load_proto_code()
 
     def load_proto_code(self):
-        root = Path(os.path.dirname(os.path.realpath(__file__)) + '/protos/code')
+        root = aux.PROJECT_ROOT / 'mindsweeper' / 'protos' / 'code'
         sys.path.insert(0, str(root))
         pb2_name = f'mindsweeper.protos.code.{self.fmt}_pb2'
         importlib.import_module(pb2_name, package=root.name)

@@ -2,7 +2,9 @@ import re
 import os
 from pathlib import Path
 
-PARSERS_DIR = Path(os.path.dirname(os.path.dirname(__file__))) / 'parsers'
+PROJECT_ROOT = Path(__file__).parent.parent.parent
+DEFAULT_MESSAGE_QUEUE = 'rabbitmq://127.0.0.1:5672/'
+DEFAULT_DATABASE = 'postgresql://127.0.0.1:5432/'
 
 def camel_to_snake(name):
     name = re.sub(r'(?<!^)(?=[A-Z])', '_', name).lower()
@@ -16,11 +18,12 @@ def snake_to_lower_camel(name, separator='_'):
     name = re.sub(rf'{separator}([a-z])', lambda x: x.group(1).upper(), name)
     return name
 
-def get_parsers():
+def get_parsers_list():
+    PARSERS_DIR = PROJECT_ROOT / 'mindsweeper' / 'parsers'
     parsers = [Path(f.name).stem for f in PARSERS_DIR.iterdir() if f.is_file()]
     parsers.remove('__init__') 
     parsers.remove('__main__')
     return parsers
 
 if __name__ == '__main__':
-    pass
+    print(PROJECT_ROOT)

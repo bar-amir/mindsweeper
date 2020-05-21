@@ -71,7 +71,6 @@ class Saver:
                 print(' [X] Updated user snapshot list.')
             
             snapshot_query = {'_id': f"{msg['userId']}-{msg['datetime']}"}
-            new_values = 
             {'$set': {f"results.{msg['type']}":  msg['data']}}
             db['snapshots'].update_one(snapshot_query, new_values)
             print(f" [X] Added {msg['type']} to snapshot {msg['userId']}-{msg['datetime']}")

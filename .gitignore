@@ -13,3 +13,5 @@ mindsweeper/gui
 mindsweeper/client copy.py
 mindsweeper/server copy.py
 mindsweeper/utils/reader copy.py
+pose_file
+result
