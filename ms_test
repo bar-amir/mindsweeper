@@ -1,0 +1,11 @@
+msg = {
+	'type': 'feelings',
+	'status': 'unparsed',
+	'datetime': 5555,
+	'data': {
+		'hunger': 45,
+		'thirst': 7,
+		'exhaustion': 786,
+		'happiness': 42
+		}
+	}

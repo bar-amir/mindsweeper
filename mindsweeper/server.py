@@ -36,9 +36,9 @@ length = 0
 @app.route('/upload', methods=['POST'])
 def upload():
     msg = bson.decode(request.get_data())
-    msg_type = aux.camel_to_snake(msg['type'])
+    msg['type'] = aux.camel_to_snake(msg['type'])
 
-    if msg_type in ['color_image']:
+    if msg['type'] in ['color_image']:
         dir_path = aux.PROJECT_ROOT / 'media' / 'color_images' / str(msg['userId']) / 'bin'
         file_path = dir_path / f"{msg['datetime']}.dat"
         os.makedirs(dir_path, exist_ok=True)
@@ -46,9 +46,8 @@ def upload():
         f.write(msg['data']['data'])
         del msg['data']['data']
         msg['data']['path'] = str(file_path)
-        print('saved to ', file_path)
 
-    if msg_type in aux.get_parsers_list():
+    if msg['type'] in aux.get_parsers_list():
         msg['status'] = 'unparsed'
 
     publish_func(msg)

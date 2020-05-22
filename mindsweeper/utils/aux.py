@@ -4,7 +4,7 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 DEFAULT_MESSAGE_QUEUE = 'rabbitmq://127.0.0.1:5672/'
-DEFAULT_DATABASE = 'postgresql://127.0.0.1:5432/'
+DEFAULT_DATABASE = 'mongodb://localhost:27017/'
 
 def camel_to_snake(name):
     name = re.sub(r'(?<!^)(?=[A-Z])', '_', name).lower()
