@@ -1,9 +1,9 @@
-from .utils import drivers, aux
+from .drivers import MessageQueue
 import bson
 import click
 import os
 from flask import Flask, request
-from . import config
+from .utils import aux, config
 
 app = Flask(__name__)
 
@@ -22,34 +22,32 @@ def run_server(host='127.0.0.1',
                publish=None,
                message_queue_url=None):
     '''listen on host:port and pass received messages to publish'''
-    global mq
     global publish_func
-    mq = drivers.MessageQueue(message_queue_url)
+    mq = MessageQueue(message_queue_url)
     if not publish:
         publish_func = mq.publish
     else:
         publish_func = publish
     app.run(host=host, port=port)
-    mq.close()
+    #mq.close()
 
 
 @app.route('/upload', methods=['POST'])
 def upload():
     msg = bson.decode(request.get_data())
-    msg['type'] = aux.camel_to_snake(msg['type'])
-
-    if msg['type'] in ['color_image']:
-        dir_path = config.PROJECT_ROOT / 'media' / 'color_images' / str(msg['userId']) / 'bin'
+    if msg['type'] in ['colorImage', 'depthImage']:
+        dir_name = aux.camel_to_snake(msg['type'])
+        dir_path = config.PROJECT_ROOT / 'media' / f'{dir_name}s' / str(msg['userId']) / 'bin'
         file_path = dir_path / f"{msg['datetime']}.dat"
         os.makedirs(dir_path, exist_ok=True)
         f = open(file_path, 'wb+')
         f.write(msg['data']['data'])
         del msg['data']['data']
         msg['data']['path'] = str(file_path)
-
-    if msg['type'] in aux.get_parsers_list():
+    if msg['type'] in aux.get_interesting_types():
         msg['status'] = 'unparsed'
-
+    else:
+        msg['status'] = 'ready'
     publish_func(msg)
     return 'OK'
 

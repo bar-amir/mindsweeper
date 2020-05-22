@@ -24,4 +24,4 @@ def find_driver(url):
     for scheme, cls in drivers.items():
         if url.startswith(scheme):
             return cls(url)
-    raise ValueError(f'invalid url: {url}')
+    raise ValueError(f'Invalid URL: {url}')

@@ -2,8 +2,10 @@
 
 import re
 from pathlib import Path
-from .. import config
-
+from . import config
+import sys
+from .. import parsers
+import pkgutil
 
 def camel_to_snake(name):
     name = re.sub(r'(?<!^)(?=[A-Z])', '_', name).lower()
@@ -20,6 +22,17 @@ def snake_to_lower_camel(name, separator='_'):
     return name
 
 
+def get_interesting_types():
+    PARSERS_DIR = config.PROJECT_ROOT / 'mindsweeper/parsers'
+    result = set()
+    for x in PARSERS_DIR.iterdir():
+        if x.name.startswith('parser_'):
+            parser_name = x.stem[len('parser_'):]
+            _, msg_types = parsers.find_parser(parser_name)
+            result = result | msg_types
+    return result
+
+
 def get_parsers_list():
     '''Returns a list of available parsers according to their filenames.'''
     PARSERS_DIR = config.PROJECT_ROOT / 'mindsweeper' / 'parsers'
@@ -27,3 +40,7 @@ def get_parsers_list():
     parsers.remove('__init__')
     parsers.remove('__main__')
     return parsers
+
+
+if __name__ == '__main__':
+    pass

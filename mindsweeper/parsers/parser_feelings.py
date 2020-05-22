@@ -1,5 +1,6 @@
 msg_types = {'feelings'}
 
-def feelings(request):
-    request['status'] = 'parsed'
-    return request
+
+def feelings(msg):
+    msg['status'] = 'ready'
+    return msg

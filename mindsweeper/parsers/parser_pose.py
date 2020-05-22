@@ -1,5 +1,6 @@
 msg_types = {'pose'}
 
-def pose(request):
-    request['status'] = 'parsed'
-    return request
+
+def pose(msg):
+    msg['status'] = 'ready'
+    return msg
