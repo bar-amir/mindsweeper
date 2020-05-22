@@ -24,7 +24,7 @@ def find_parser(parser_name):
 @click.argument('message_queue_url', nargs=1)
 def run_parser(parser_name, message_queue_url=None):
     parser = find_parser(parser_name)
-    parser_factory(message_queue_url)(parser)() 
+    parser_factory(message_queue_url)(parser, msg_types)() 
 
 @main.command()
 @click.argument('parser_name', nargs=1)

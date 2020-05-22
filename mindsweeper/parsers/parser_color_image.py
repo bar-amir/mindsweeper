@@ -2,6 +2,9 @@ from PIL import Image
 from pathlib import Path
 import os
 
+msg_types = {'colorImage'}
+
+
 def color_image(request):
     path = request['data']['path']
     f = open(path, 'rb')

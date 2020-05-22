@@ -1,3 +1,5 @@
+'''A collection of small helpful functions.'''
+
 import re
 from pathlib import Path
 from .. import config
@@ -19,6 +21,7 @@ def snake_to_lower_camel(name, separator='_'):
 
 
 def get_parsers_list():
+    '''Returns a list of available parsers according to their filenames.'''
     PARSERS_DIR = config.PROJECT_ROOT / 'mindsweeper' / 'parsers'
     parsers = [Path(f.name).stem for f in PARSERS_DIR.iterdir() if f.is_file()]
     parsers.remove('__init__')
