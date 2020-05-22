@@ -9,9 +9,10 @@ media/*
 mindsweeper/save.pg.py
 scripts/start_over_db.py
 scripts/start.sh
-mindsweeper/gui
+mindsweeper/gui/mindsweeper/node_modules
 mindsweeper/client copy.py
 mindsweeper/server copy.py
 mindsweeper/utils/reader copy.py
 pose_file
 result
+ms_test_test
