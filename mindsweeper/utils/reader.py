@@ -1,13 +1,12 @@
-from ..protos.code import server_pb2 as spb2
 import struct
 import gzip
-import os
 import sys
 import importlib
 from pathlib import Path
 import click
-from . import aux
+from .. import config
 import time
+
 
 class Reader:
     def __init__(self, path):
@@ -21,12 +20,12 @@ class Reader:
         self.load_proto_code()
 
     def load_proto_code(self):
-        root = aux.PROJECT_ROOT / 'mindsweeper' / 'protos' / 'code'
+        root = config.PROJECT_ROOT / 'mindsweeper' / 'protos' / 'code'
         sys.path.insert(0, str(root))
         pb2_name = f'mindsweeper.protos.code.{self.fmt}_pb2'
         importlib.import_module(pb2_name, package=root.name)
         self.pb2 = sys.modules[pb2_name]
-    
+
     def __iter__(self):
         yield from self.gen
 
@@ -65,7 +64,7 @@ class Reader:
                 else:
                     snapshot = self.pb2.Snapshot()
                     snapshot.ParseFromString(f.read(msg_len))
-                    if not sweep_end or snapshot.datetime > sweep_end :
+                    if not sweep_end or snapshot.datetime > sweep_end:
                         sweep_end = snapshot.datetime
                     if not sweep_start or snapshot.datetime < sweep_start:
                         sweep_start = snapshot.datetime
@@ -122,7 +121,7 @@ class Reader:
                             'data': snapshot.color_image.data
                         }
                     }
-                    yield msg 
+                    yield msg
                     msg = {
                         'type': 'depth_image',
                         'status': 'uploaded',
@@ -152,6 +151,3 @@ class Reader:
                     bar.update(1)
                     msg_len_bytes = f.read(4)
         raise StopIteration()
-
-if __name__ == '__main__':
-    r = Reader('/home/baram/Documents/mindsweeper/sample.mind.gz')

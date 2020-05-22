@@ -4,30 +4,42 @@ import pymongo
 import json
 import datetime
 from .utils import aux
+from . import config
 import click
 
 app = Flask(__name__)
+
+
+@click.group()
+def main():
+    pass
+
 
 @app.route('/users')
 def get_users():
     collection = db['users'].find({}, {'_id': 1, 'username': 1})
     return json.dumps(list(collection))
 
+
 @app.route('/users/<user_id>/sweeps')
 def get_sweeps(user_id):
     collection = db['sweeps'].find({'userId': int(user_id)})
     return json.dumps(list(collection))
 
+
 @app.route('/users/<user_id>/sweeps/<sweep_id>/snapshots')
 def get_sweep_snapshots(user_id, sweep_id):
     sweep = db['sweeps'].find_one({'_id': sweep_id})
     print(sweep)
-    collection = db['snapshots'].find({ '$and': [{'datetime': {'$gte': sweep['sweepStart']}}, {'datetime': {'$lte': sweep['sweepEnd']}}]})
+    collection = db['snapshots'].find(
+        {'$and': [{'datetime': {'$gte': sweep['sweepStart']}},
+                  {'datetime': {'$lte': sweep['sweepEnd']}}]})
     return json.dumps(list(collection))
+
 
 @app.route('/users/<user_id>')
 def get_user(user_id):
-    user = db['users'].find_one({'_id': int(user_id)}, {'snapshots': 0}) 
+    user = db['users'].find_one({'_id': int(user_id)}, {'snapshots': 0})
     gender = {
         0: 'Male',
         1: 'Female',
@@ -42,6 +54,7 @@ def get_user(user_id):
     print(u)
     return json.dumps(u)
 
+
 @app.route('/users/<user_id>/snapshots')
 def get_user_snapshots(user_id):
     snapshots = db['snapshots'].find({'userId': int(user_id)}, {'_id': 1, 'datetime': 1}).sort('datetime')
@@ -54,6 +67,7 @@ def get_user_snapshots(user_id):
         result.append(s)
     return json.dumps(result)
 
+
 @app.route('/users/<user_id>/snapshots/<snapshot_id>')
 def get_user_snapshot(user_id, snapshot_id):
     snapshot = db['snapshots'].find_one({'_id': snapshot_id})
@@ -63,6 +77,7 @@ def get_user_snapshot(user_id, snapshot_id):
         'results': list(snapshot['results'].keys())
     }
     return json.dumps(result)
+
 
 @app.route('/users/<user_id>/snapshots/<snapshot_id>/<result_name>')
 def get_result(user_id, snapshot_id, result_name):
@@ -77,6 +92,7 @@ def get_result(user_id, snapshot_id, result_name):
     else:
         return 'No available data'
 
+
 @app.route('/users/<user_id>/snapshots/<snapshot_id>/<result_name>/data')
 def get_result_data(user_id, snapshot_id, result_name):
     snapshot = db['snapshots'].find_one({'_id': snapshot_id})
@@ -87,23 +103,21 @@ def get_result_data(user_id, snapshot_id, result_name):
     else:
         return 'No available data'
 
+
 def run_api_server(database_url,
                 host='127.0.0.1', \
                 port=5000):
     '''listen on host:port and serve data from database_url'''
     global client
     global db
-    
+
     if not database_url:
-        database_url = aux.DEFAULT_DATABASE
+        database_url = config.DEFAULT_DATABASE
 
     client = pymongo.MongoClient(database_url)
     db = client['mindsweeper']
     app.run(host=host, port=port)
 
-@click.group()
-def main():
-    pass
 
 @main.command()
 @click.option('-h', '--host', default='127.0.0.1')

@@ -1,10 +1,11 @@
 import click
 import requests
-from . import api
+
 
 @click.group()
 def main():
     pass
+
 
 @main.command()
 @click.option('-h', '--host', default='127.0.0.1')
@@ -12,6 +13,7 @@ def main():
 def get_users(host, port):
     response = requests.get(f"http://{host}:{port}/users")
     click.echo(response.text)
+
 
 @main.command()
 @click.option('-h', '--host', default='127.0.0.1')
@@ -21,6 +23,7 @@ def get_user(host, port, user_id):
     response = requests.get(f"http://{host}:{port}/users/{user_id}")
     click.echo(response.text)
 
+
 @main.command()
 @click.option('-h', '--host', default='127.0.0.1')
 @click.option('-p', '--port', default=5000)
@@ -28,6 +31,7 @@ def get_user(host, port, user_id):
 def get_snapshots(host, port, user_id):
     response = requests.get(f"http://{host}:{port}/users/{user_id}/snapshots")
     click.echo(response.text)
+
 
 @main.command()
 @click.option('-h', '--host', default='127.0.0.1')
@@ -38,6 +42,7 @@ def get_snapshot(host, port, user_id, snapshot_id):
     response = requests.get(f"http://{host}:{port}/users/{user_id}/snapshots/{snapshot_id}")
     click.echo(response.text)
 
+
 @main.command()
 @click.option('-h', '--host', default='127.0.0.1')
 @click.option('-p', '--port', default=5000)
@@ -47,6 +52,7 @@ def get_snapshot(host, port, user_id, snapshot_id):
 def get_result(host, port, user_id, snapshot_id, result_name):
     response = requests.get(f"http://{host}:{port}/users/{user_id}/snapshots/{snapshot_id}/{result_name}")
     click.echo(response.text)
+
 
 if __name__ == '__main__':
     main()
