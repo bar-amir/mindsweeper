@@ -16,3 +16,7 @@ mindsweeper/utils/reader copy.py
 pose_file
 result
 ms_test_test
+scripts/_configurations.sh
+scripts/_start_over_db.py
+scripts/_start.sh
+scripts/_stop.sh
