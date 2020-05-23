@@ -1,5 +1,6 @@
 from .drivers import MessageQueue
 import bson
+import struct
 import click
 import os
 from flask import Flask, request
@@ -29,21 +30,27 @@ def run_server(host='127.0.0.1',
     else:
         publish_func = publish
     app.run(host=host, port=port)
-    #mq.close()
+    # mq.close()
 
 
 @app.route('/upload', methods=['POST'])
 def upload():
     msg = bson.decode(request.get_data())
     if msg['type'] in ['colorImage', 'depthImage']:
+        if msg['type'] == 'depthImage':
+            floatlist = msg['data']['data']
+            msg['data']['dataLen'] = len(floatlist)
+            msg['data']['data'] = struct.pack(
+                '%sf' % len(floatlist), *floatlist)
         dir_name = aux.camel_to_snake(msg['type'])
-        dir_path = config.PROJECT_ROOT / 'media' / f'{dir_name}s' / str(msg['userId']) / 'bin'
+        dir_path = config.PROJECT_ROOT / f"media/{dir_name}s/{str(msg['userId'])}/bin"
         file_path = dir_path / f"{msg['datetime']}.dat"
         os.makedirs(dir_path, exist_ok=True)
-        f = open(file_path, 'wb+')
+        f = open(file_path, 'wb')
         f.write(msg['data']['data'])
         del msg['data']['data']
         msg['data']['path'] = str(file_path)
+        f.close()
     if msg['type'] in aux.get_interesting_types():
         msg['status'] = 'unparsed'
     else:

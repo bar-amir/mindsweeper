@@ -6,16 +6,12 @@ from ...utils import config
 
 
 class RabbitMQ:
-    def __init__(self, url=None):
-        if not url:
-            url = config.DEFAULT_MESSAGE_QUEUE
-        url = urlparse(url)
+    def __init__(self, url):
         self.connection = pika.BlockingConnection(
             pika.ConnectionParameters(host=url.hostname, port=url.port))
         self.channel = self.connection.channel()
         self.channel.exchange_declare(exchange='ms_exchange',
                                       exchange_type='topic')
-
 
     def publish(self, msg):
         topic = f"{msg['type']}.{msg['status']}"
@@ -23,8 +19,7 @@ class RabbitMQ:
                                    routing_key=topic,
                                    body=bson.encode(msg))
         click.echo(f" [x] Published {topic}")
-        #self.connection.close()
-
+        # self.connection.close()
 
     def start_parser(self, function, msg_types):
         def callback(ch, method, properties, body):
@@ -53,7 +48,7 @@ class RabbitMQ:
                                 queue='saver',
                                 routing_key='*.ready')
         click.echo(' [*] Waiting for messages. To exit press CTRL+C')
-        self.channel.basic_consume(queue='ms_queue',
+        self.channel.basic_consume(queue='saver',
                                    on_message_callback=callback,
                                    auto_ack=True)
         self.channel.start_consuming()

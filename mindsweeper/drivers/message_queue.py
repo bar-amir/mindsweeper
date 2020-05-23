@@ -1,3 +1,4 @@
+from ..utils import config
 from .message_queues import RabbitMQ
 
 drivers = {'rabbitmq://': RabbitMQ}
@@ -5,6 +6,8 @@ drivers = {'rabbitmq://': RabbitMQ}
 
 class MessageQueue:
     def __init__(self, url):
+        if not url:
+            url = config.DEFAULT_MESSAGE_QUEUE
         self.driver = find_driver(url)
 
     def publish(self, msg):

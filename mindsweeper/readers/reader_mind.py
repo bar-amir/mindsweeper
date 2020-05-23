@@ -1,4 +1,3 @@
-import bson
 import click
 import gzip
 import struct
@@ -58,22 +57,15 @@ def mind(path, proto):
         }
         yield msg
         f.seek(cursor_snapshots)
-        with click.progressbar(length=snapshots_counter, label=click.style('Uploading sweep...', fg='yellow')) as bar:
+        with click.progressbar(length=snapshots_counter,
+                               label=click.style(
+                                   'Uploading sweep...',
+                                   fg='yellow')) as bar:
             msg_len_bytes = f.read(4)
             while len(msg_len_bytes) > 0:
                 msg_len = struct.unpack('I', msg_len_bytes)[0]
                 snapshot = proto.Snapshot()
                 snapshot.ParseFromString(f.read(msg_len))
-                msg = {
-                    'type': 'snapshot',
-                    'status': 'uploaded',
-                    'userId': user.user_id,
-                    'datetime': snapshot.datetime,
-                    'data': {
-                        'format': 'mind'
-                    }
-                }
-                yield msg
                 msg = {
                     'type': 'pose',
                     'status': 'uploaded',
@@ -90,7 +82,8 @@ def mind(path, proto):
                             'y': snapshot.pose.rotation.y,
                             'z': snapshot.pose.rotation.z,
                             'w': snapshot.pose.rotation.w
-                        }
+                        },
+                        'format': 'mind'
                     }
                 }
                 yield msg
@@ -102,7 +95,8 @@ def mind(path, proto):
                     'data': {
                         'width': snapshot.color_image.width,
                         'height': snapshot.color_image.height,
-                        'data': snapshot.color_image.data
+                        'data': snapshot.color_image.data,
+                        'format': 'mind'
                     }
                 }
                 yield msg
@@ -115,7 +109,8 @@ def mind(path, proto):
                     'data': {
                         'width': snapshot.depth_image.width,
                         'height': snapshot.depth_image.height,
-                        'data': bson.encode(list(snapshot.depth_image.data))
+                        'data': list(snapshot.depth_image.data),
+                        'format': 'mind'
                     }
                 }
                 yield msg
@@ -128,7 +123,8 @@ def mind(path, proto):
                         'hunger': snapshot.feelings.hunger,
                         'thirst': snapshot.feelings.thirst,
                         'exhaustion': snapshot.feelings.exhaustion,
-                        'happiness': snapshot.feelings.happiness
+                        'happiness': snapshot.feelings.happiness,
+                        'format': 'mind'
                     }
                 }
                 yield msg

@@ -1,38 +1,33 @@
+from ..utils import config
 from .databases import MongoDB
 
-drivers = {'mongodb://'}
+drivers = {'mongodb://': MongoDB}
 
 
 class Database:
     def __init__(self, url):
+        if not url:
+            url = config.DEFAULT_DATABASE
         self.driver = find_driver(url)
 
-    def create_user(self, **kwargs):
-        pass
+    def upsert(self, msg):
+        t = msg['type']
+        if t == 'user':
+            self.driver.upsert_user(msg)
+        elif t == 'sweep':
+            self.driver.upsert_sweep(msg)
+        elif t in ['colorImage', 'depthImage', 'pose', 'feelings']:
+            self.driver.upsert_result(msg)
+        else:
+            raise ValueError(
+                f"Database does not support message type {t}")
+        print(f" [X] Created new entry {msg['type']}")
 
-    def get_user(self, **kwargs):
-        pass
+    def find(self, collection, query, projection=None):
+        return self.driver.find(collection, query, projection)
 
-    def update_user(self, **kwargs):
-        pass
-
-    def create_sweep(self, **kwargs):
-        pass
-
-    def get_sweep(self, **kwargs):
-        pass
-
-    def update_sweep(self, **kwargs):
-        pass
-
-    def create_snapshot(self, **kwargs):
-        pass
-
-    def get_snapshot(self, **kwargs):
-        pass
-
-    def update_snapshot(self, **kwargs):
-        pass
+    def find_one(self, collection, query, projection=None):
+        return self.driver.find_one(collection, query, projection)
 
 
 def find_driver(url):

@@ -1,4 +1,4 @@
-from .utils import drivers
+from .drivers import MessageQueue, Database
 import click
 
 
@@ -9,8 +9,8 @@ def saver_factory(function, database_url):
 
 
 def saver(msg, database_url=None):
-    db = drivers.Database(database_url)
-    db.save_msg(msg)
+    db = Database(database_url)
+    db.upsert(msg)
 
 
 @click.group()
@@ -22,7 +22,7 @@ def main():
 @click.argument('database_url', nargs=1)
 @click.argument('message_queue_url', nargs=1)
 def run_saver(database_url=None, message_queue_url=None):
-    mq = drivers.MessageQueue(message_queue_url)
+    mq = MessageQueue(message_queue_url)
     mq.start_saver(saver_factory(saver, database_url))
 
 
