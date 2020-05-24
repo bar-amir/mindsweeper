@@ -1,6 +1,7 @@
 import pytest
 from mindsweeper import client
 
+
 def test_client_error(tmp_path):
     f = tmp_path / 'file.txt'
     with pytest.raises(TypeError):

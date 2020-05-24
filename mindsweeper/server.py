@@ -17,7 +17,13 @@ def main():
 def run_server(host='127.0.0.1',
                port=8000,
                publish=None):
-    '''listen on host:port and pass received messages to publish'''
+    '''Listen on `host`:`port` and pass received messages to `publish`.'''
+    if not isinstance(host, str):
+        raise TypeError("Invalid value for host: not a valid string.")
+    if not isinstance(port, int):
+        raise TypeError("Invalid value for port: not a valid integer.")
+    if publish and not callable(publish):
+        raise TypeError("Invalid value for func: not callable.")
     global publish_func
     if not publish:
         click.echo("Error: Missing argument 'publish'")
