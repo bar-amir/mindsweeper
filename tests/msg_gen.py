@@ -1,3 +1,5 @@
+'''A collection of functions used to generate messages for testing.'''
+
 from mindsweeper.readers.protos.code import mind_pb2
 import time
 import struct
@@ -63,13 +65,3 @@ def create_color_image_msg():
             'data': 'fake-data'.encode()
         }
     }
-
-
-def create_snapshot():
-    snapshot = mind_pb2.Snapshot()
-    pose = mind_pb2.Pose
-    translation = mind_pb2.Pose().Translation()
-    rotation = mind_pb2.Pose().Rotation()
-    color_image = mind_pb2.ColorImage()
-    depth_image = mind_pb2.DepthImage()
-    feelings = mind_pb.Feelings()

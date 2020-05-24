@@ -1,3 +1,4 @@
+import bson
 import click
 from .drivers import Database, MessageQueue
 
@@ -5,7 +6,7 @@ from .drivers import Database, MessageQueue
 class Saver:
     def __init__(self, database_url):
         self.db = Database(database_url)
-  
+
     def save(self, msg):
         self.db.upsert(msg)
 
@@ -25,9 +26,15 @@ def run_saver(database_url=None, message_queue_url=None):
 
 @main.command()
 @click.option('-d', '--database', nargs=1, default=None)
+@click.option('-p', '--path', is_flag=True, nargs=1, default=None)
 @click.argument('topic_name', nargs=1)
 @click.argument('data', nargs=1)
-def save(topic_name, data, database=None):
+def save(topic_name, data, path, database=None):
+    if path:
+        f = open(data, 'rb')
+        data = bson.decode(f.read())
+        f.close()
+    print(data)
     db = Database(database)
     db.upsert(data)
 

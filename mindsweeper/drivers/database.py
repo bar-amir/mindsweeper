@@ -21,7 +21,7 @@ class Database:
         else:
             raise ValueError(
                 f"Database does not support message type {t}")
-        print(f" [X] Created new entry {msg['type']}")
+        print(f"Created new entry {msg['type']}")
 
     def find(self, collection, query, projection=None):
         return self.driver.find(collection, query, projection)

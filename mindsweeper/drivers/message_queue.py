@@ -1,5 +1,5 @@
-from .message_queues import RabbitMQ
 from ..utils import config
+from .message_queues import RabbitMQ
 
 drivers = {'rabbitmq://': RabbitMQ}
 
