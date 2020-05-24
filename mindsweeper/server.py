@@ -45,9 +45,7 @@ def run_server_command(host, port, message_queue_url):
     # mq.close()
 
 
-@app.route('/upload', methods=['POST'])
-def upload():
-    msg = bson.decode(request.get_data())
+def upload(msg, publish):
     if msg['type'] == 'hello':
         return 'HELLO'
     if msg['type'] in ['colorImage', 'depthImage']:
@@ -69,8 +67,13 @@ def upload():
         msg['status'] = 'unparsed'
     else:
         msg['status'] = 'ready'
-    publish_func(msg)
+    publish(msg)
     return 'OK'
+
+
+@app.route('/upload', methods=['POST'])
+def upload_api():
+    return upload(bson.decode(request.get_data()), publish_func)
 
 
 if __name__ == '__main__':

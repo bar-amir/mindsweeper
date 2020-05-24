@@ -9,6 +9,7 @@ def test_mq_default():
     result = urlparse(config.DEFAULT_MESSAGE_QUEUE)
     assert f'{result.scheme}://' in drivers, 'default message queue driver is not supported.'
 
+
 def test_db_default():
     drivers = db.drivers
     result = urlparse(config.DEFAULT_DATABASE)
