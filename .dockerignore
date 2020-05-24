@@ -1,0 +1,10 @@
+docs/
+.env/
+.pytest_cache/
+docs/
+media/
+scripts/
+source/
+tests/
+*/__pycache__/
+*.py[cod]

@@ -21,3 +21,4 @@ scripts/_start_over_db.py
 scripts/_start.sh
 scripts/_stop.sh
 .coverage
+.data/

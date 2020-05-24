@@ -26,10 +26,10 @@ def run_server(host='127.0.0.1',
     global publish_func
     mq = MessageQueue(message_queue_url)
     if not publish:
-        publish_func = mq.publish
+       publish_func = mq.publish
     else:
-        publish_func = publish
-    app.run(host=host, port=port)
+       publish_func = publish
+    app.run(host=host, port=port, debug=True)
     # mq.close()
 
 

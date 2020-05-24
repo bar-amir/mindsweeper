@@ -42,5 +42,16 @@ def get_parsers_list():
     return parsers
 
 
+def get_parsers():
+    PARSERS_DIR = config.PROJECT_ROOT / 'mindsweeper/parsers'
+    result = []
+    for x in PARSERS_DIR.iterdir():
+        if x.name.startswith('parser_'):
+            parser_name = x.stem[len('parser_'):]
+            _, msg_types = parsers.find_parser(parser_name)
+            result.append((parser_name, msg_types))
+    return result
+
+
 if __name__ == '__main__':
     pass

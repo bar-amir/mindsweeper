@@ -1,8 +1,87 @@
 version: '3'
+
 services:
-  web:
+  ms_mq:
+    image: rabbitmq:3-management
+    expose:
+      - "5672"
+      - "15672"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  ms_db:
+    image: mongo:4.0.4
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+
+  ms_server:
     build: .
+    image: mindsweeper
+    volumes:
+      - media:/media
+      - .:/code
+    ports:
+      - '8000:8000'
+    depends_on:
+      - ms_mq
+    command: python -m mindsweeper.server run-server -h '0.0.0.0' 'rabbitmq://ms_mq:5672/'
+
+  ms_saver:
+    image: mindsweeper
+    volumes:
+      - media:/media
+    depends_on:
+      - ms_mq
+      - ms_db
+    command: python -m mindsweeper.saver run-saver 'mongodb://ms_db:27017/' 'rabbitmq://ms_mq:5672/'
+
+  ms_api:
+    image: mindsweeper
+    volumes:
+      - media:/media
+    expose:
+      - "5000"
     ports:
       - "5000:5000"
-  redis:
-    image: "redis:alpine"
+    depends_on:
+      - ms_mq
+      - ms_db
+    command: python -m mindsweeper.api run-server -h '0.0.0.0'
+
+  ms_parser_color_image:
+      image: mindsweeper
+      volumes:
+        - media:/media
+      depends_on:
+        - ms_server
+        - ms_mq
+      command: python -m mindsweeper.parsers run-parser 'color_image' 'rabbitmq://ms_mq:5672/'
+
+  ms_parser_depth_image:
+    image: mindsweeper
+    volumes:
+      - media:/media
+    depends_on:
+      - ms_server
+      - ms_mq
+    command: python -m mindsweeper.parsers run-parser 'depth_image' 'rabbitmq://ms_mq:5672/'
+
+  ms_parser_feelings:
+    image: mindsweeper
+    depends_on:
+      - ms_server
+      - ms_mq
+    command: python -m mindsweeper.parsers run-parser 'feelings' 'rabbitmq://ms_mq:5672/'
+
+  ms_parser_pose:
+    image: mindsweeper
+    depends_on:
+      - ms_server
+      - ms_mq
+    command: python -m mindsweeper.parsers run-parser 'pose' 'rabbitmq://ms_mq:5672/'
+
+volumes:
+  media:
