@@ -4,7 +4,8 @@ import struct
 import click
 import os
 from flask import Flask, request
-from .utils import aux, config
+from .utils import aux
+from .utils.config import PROJECT_ROOT
 
 app = Flask(__name__)
 
@@ -46,7 +47,17 @@ def run_server_command(host, port, message_queue_url):
 
 
 def upload(msg, publish):
-    if msg['type'] == 'hello':
+    '''
+    Receives a message in a format readable by the server,
+    and make it ready to be sent to the message queue:
+    Messages with types mentioned in any parser's `msg_types`,
+    will change their status to 'unparsed'.
+    Other messages will change their status to 'ready'.
+    For messages with large amount of data (like images),
+    their data should be saved to a reasonable path under the
+    'media' folder.
+    '''
+    if msg['type'] == 'hello':  # a little handshake with client
         return 'HELLO'
     if msg['type'] in ['colorImage', 'depthImage']:
         if msg['type'] == 'depthImage':
@@ -55,7 +66,7 @@ def upload(msg, publish):
             msg['data']['data'] = struct.pack(
                 '%sf' % len(floatlist), *floatlist)
         dir_name = aux.camel_to_snake(msg['type'])
-        dir_path = config.PROJECT_ROOT / f"media/{dir_name}s/{str(msg['userId'])}/bin"
+        dir_path = PROJECT_ROOT / f"media/{dir_name}s/{str(msg['userId'])}/bin"
         file_path = dir_path / f"{msg['datetime']}.dat"
         os.makedirs(dir_path, exist_ok=True)
         f = open(file_path, 'wb')
