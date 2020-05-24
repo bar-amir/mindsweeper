@@ -1,11 +1,11 @@
-from .drivers import MessageQueue
 import bson
-import struct
 import click
 import os
+import struct
 from flask import Flask, request
 from .utils import aux
 from .utils.config import PROJECT_ROOT
+from .drivers import MessageQueue
 
 app = Flask(__name__)
 

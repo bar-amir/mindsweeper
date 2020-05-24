@@ -21,9 +21,6 @@ def upload_sample(host='127.0.0.1',
         reader = Reader(path)
     except ModuleNotFoundError:
         raise IOError("Mindsweeper does not support this file extension. (Reader-function not found)")
-        click.echo(click.style(
-                'Error: File format is not supported.',
-                fg='red'))
         return
     try:
         for msg in reader:

@@ -1,10 +1,10 @@
 import click
-import os
-from pathlib import Path
-import struct
-import numpy
-import seaborn
 import matplotlib.pyplot as plt
+import numpy
+import os
+import seaborn
+import struct
+from pathlib import Path
 
 
 msg_types = {'depthImage'}

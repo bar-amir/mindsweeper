@@ -1,12 +1,9 @@
-import bson
-import shutil
 import pytest
-import requests
+import shutil
+from pathlib import Path
 from . import msg_gen as mg
-from click.testing import CliRunner
 from mindsweeper import server
 from mindsweeper.utils import aux
-from pathlib import Path
 
 
 HOST = '127.0.0.1'

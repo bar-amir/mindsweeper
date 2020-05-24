@@ -18,7 +18,7 @@ def mind(path, proto):
         * The other messages are snapshot results: Pose, ColorImage, DepthImage and Feelings
     '''
     if not proto:
-        raise ModuleNotFoundError(f"Protobuf module not found.")
+        raise ModuleNotFoundError('Protobuf module not found.')
     if path.endswith('.gz'):
         open_func = gzip.open
     else:
@@ -151,4 +151,3 @@ def mind(path, proto):
                 yield msg
                 bar.update(1)
                 msg_len_bytes = f.read(4)
-

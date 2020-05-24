@@ -1,11 +1,11 @@
-from .drivers import MessageQueue, Database
 import click
+from .drivers import Database, MessageQueue
 
 
 class Saver:
     def __init__(self, database_url):
         self.db = Database(database_url)
-    
+  
     def save(self, msg):
         self.db.upsert(msg)
 

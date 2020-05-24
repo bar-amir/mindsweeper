@@ -1,7 +1,8 @@
 import click
-from PIL import Image
-from pathlib import Path
 import os
+from pathlib import Path
+from PIL import Image
+
 
 msg_types = {'colorImage'}
 

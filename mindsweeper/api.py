@@ -1,9 +1,10 @@
-from flask import Flask, send_file
-import json
-import datetime
-from .utils import aux
 import click
+import datetime
+import json
+from flask import Flask, send_file
 from .drivers import Database
+from .utils import aux
+
 
 app = Flask(__name__)
 

@@ -1,6 +1,4 @@
-import click
 import sys
-from emoji import emojize
 from importlib import import_module
 from pathlib import Path
 from ..utils.config import PROJECT_ROOT
@@ -25,7 +23,6 @@ class Reader:
             try:
                 yield from self.gen
             except StopIteration as e:
-                print('stop iteration??')
                 raise e
 
 

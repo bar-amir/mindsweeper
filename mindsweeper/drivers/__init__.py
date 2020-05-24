@@ -1,2 +1,2 @@
-from .message_queue import MessageQueue
 from .database import Database
+from .message_queue import MessageQueue

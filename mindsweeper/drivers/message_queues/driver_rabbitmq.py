@@ -1,9 +1,9 @@
-import bson
 import click
+import bson
 import pika
-from urllib.parse import urlparse
-from ...utils import aux, config
 import time
+from ...utils import aux
+from urllib.parse import urlparse
 
 
 class RabbitMQ:
@@ -12,6 +12,13 @@ class RabbitMQ:
         self.connect()
 
     def connect(self):
+        '''
+        Connect to RabbitMQ, then create the app's exchange and declare
+        queues for each parser and for the saver. Bind each queue to their
+        topic: Parsers subscribe to messages found in their `msg_types`
+        with status 'unparsed'. Saver subscribe to every message with
+        status 'ready'.
+        '''
         attempts = 0
         while True:
             try:
@@ -42,13 +49,15 @@ class RabbitMQ:
                 attempts += 1
 
     def publish(self, msg):
+        '''Receive a message and publish it to the right topic, according to
+        its `type` and `status`.'''
         topic = f"{msg['type']}.{msg['status']}"
         while True:
             try:
                 self.channel.basic_publish(
-                exchange='ms_exchange',
-                routing_key=topic,
-                body=bson.encode(msg))
+                    exchange='ms_exchange',
+                    routing_key=topic,
+                    body=bson.encode(msg))
                 break
             except:
                 click.echo('Having trouble publishing to message queue. Trying to reconnect.')
@@ -57,6 +66,7 @@ class RabbitMQ:
         # self.connection.close()
 
     def start_parser(self, function, msg_types):
+        '''Start a parser as a service.'''
         def callback(ch, method, properties, body):
             click.echo('Received message')
             self.publish(function(bson.decode(body)))
@@ -76,6 +86,8 @@ class RabbitMQ:
                 time.sleep(10)
 
     def start_saver(self, saver):
+        '''Start a saver as a servce by using this connected to
+        the message queue.'''
         def callback(ch, method, properties, body):
             click.echo('Received message')
             saver.save(bson.decode(body))

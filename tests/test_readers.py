@@ -1,13 +1,8 @@
-import pytest
 from mindsweeper import readers
-from mindsweeper.readers.protos.code import mind_pb2
-
-
-
 
 
 def test_reader(tmp_path):
-    f = tmp_path / 'file'
+    pass
 
 
 def test_finds():
