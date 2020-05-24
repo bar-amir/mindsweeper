@@ -1,7 +1,7 @@
 
 import bson
 import click
-from . import find_parser
+from . import find_parser, parse
 from ..drivers import MessageQueue
 
 
@@ -24,16 +24,11 @@ def run_parser_command(parser_name, message_queue_url):
                message_queue_url=message_queue_url)
 
 
-@main.command()
+@main.command(name='parse')
 @click.argument('parser_name', nargs=1)
 @click.argument('path', nargs=1, default=None)
-def parse(parser_name, path):
-    parser, msg_types = find_parser(parser_name)
-    with open(path, 'rb') as f:
-        data = bson.decode(f.read())
-        if data['type'] not in msg_types:
-            raise ValueError(f'Data incompatible with parser {parser_name}')
-        click.echo(parser(data))
+def parse_command(parser_name, path):
+    parse(parser_name=parser_name, path=path)
 
 
 if __name__ == '__main__':

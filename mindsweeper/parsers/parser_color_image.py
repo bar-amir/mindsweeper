@@ -20,7 +20,7 @@ def color_image(msg):
     new_path = Path(path).parent.parent / f"{msg['datetime']}.png"
     image.save(new_path)
     os.remove(path)
-    click.echo(f' [X] Saved image to {new_path}')
+    click.echo(f'Saved image to {new_path}')
     msg['data']['path'] = str(new_path)
     msg['status'] = 'ready'
     return msg
