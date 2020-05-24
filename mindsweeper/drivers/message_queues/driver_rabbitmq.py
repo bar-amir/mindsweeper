@@ -25,10 +25,11 @@ class RabbitMQ:
                     exchange_type='topic')
                 for parser_name, msg_types in aux.get_parsers():
                     self.channel.queue_declare(queue=parser_name)
-                    self.channel.queue_bind(
-                        exchange='ms_exchange',
-                        queue=parser_name,
-                        routing_key=f'{parser_name}.unparsed')
+                    for t in msg_types:
+                        self.channel.queue_bind(
+                            exchange='ms_exchange',
+                            queue=parser_name,
+                            routing_key=f'{t}.unparsed')
                 self.channel.queue_declare(queue='saver')
                 self.channel.queue_bind(
                     exchange='ms_exchange',
@@ -36,7 +37,7 @@ class RabbitMQ:
                     routing_key='*.ready')
                 break
             except:
-                click.echo('Having trouble connecting to message queue. Trying again in a few seconds.')
+                click.echo('Having trouble connecting to message queue. Trying again in 10 seconds.')
                 time.sleep(10)
                 attempts += 1
 
@@ -71,13 +72,13 @@ class RabbitMQ:
                 self.channel.start_consuming()
             except:
                 attempts += 1
-                click.echo(f'Having trouble consuming from queue. Trying again in a few seconds. ({attempts})')
+                click.echo(f'Having trouble consuming from queue. Trying again in 10 seconds. ({attempts})')
                 time.sleep(10)
 
-    def start_saver(self, function):
+    def start_saver(self, saver):
         def callback(ch, method, properties, body):
             click.echo('Received message')
-            function(bson.decode(body))
+            saver.save(bson.decode(body))
         click.echo('Waiting for messages. (Press CTRL+C to quit)')
         attempts = 0
         while True:
@@ -89,5 +90,5 @@ class RabbitMQ:
                 self.channel.start_consuming()
             except:
                 attempts += 1
-                click.echo(f'Having trouble consuming from queue. Trying again in a few seconds. ({attempts})')
+                click.echo(f'Having trouble consuming from queue. Trying again in 10 seconds. ({attempts})')
                 time.sleep(10)

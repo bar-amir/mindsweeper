@@ -2,15 +2,12 @@ from .drivers import MessageQueue, Database
 import click
 
 
-def saver_factory(function, database_url):
-    def saver(msg):
-        return function(msg, database_url)
-    return saver
-
-
-def saver(msg, database_url=None):
-    db = Database(database_url)
-    db.upsert(msg)
+class Saver:
+    def __init__(self, database_url):
+        self.db = Database(database_url)
+    
+    def save(self, msg):
+        self.db.upsert(msg)
 
 
 @click.group()
@@ -23,7 +20,7 @@ def main():
 @click.argument('message_queue_url', nargs=1)
 def run_saver(database_url=None, message_queue_url=None):
     mq = MessageQueue(message_queue_url)
-    mq.start_saver(saver_factory(saver, database_url))
+    mq.start_saver(Saver(database_url))
 
 
 @main.command()
@@ -31,7 +28,8 @@ def run_saver(database_url=None, message_queue_url=None):
 @click.argument('topic_name', nargs=1)
 @click.argument('data', nargs=1)
 def save(topic_name, data, database=None):
-    saver(data, database)
+    db = Database(database)
+    db.upsert(data)
 
 
 if __name__ == '__main__':

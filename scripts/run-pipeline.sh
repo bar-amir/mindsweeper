@@ -1,38 +1,30 @@
 #!/bin/bash
 
-# needs to go to client
-
-# protos="./mindsweeper/protos"
-# for file in "$protos"/*;
-# do
-#    if [[ -f $file ]]
-#    then
-#        python -m grpc_tools.protoc -I"$protos" --python_out="$protos"/code/ --grpc_python_out="$protos"/code/ $file
-#    fi
-# done
+scripts/compile-protos.sh
+docker-compose up
 
 docker stop $(docker ps -a -q);
 docker rm -vf $(docker ps -a -q)
 docker rmi -f $(docker images -a -q)
 sudo rm -r ./data
-docker-compose up
+
 
 # sudo docker build -t ms-server .
 # docker tag ms-server:latest
 # docker-compose up
 # docker network create ms-network
-# docker run -d \
-#            --name ms-rabbit \
-#            --hostname ms-rabbit \
-#            --net ms-network \
-#            -p 5672:5672 \
-#            -p 15672:15672 \
-#            rabbitmq:3-management;
-# docker run -d \
-#            --name ms-mongodb \
-#            --hostname ms-mongodb \
-#            --net ms-network \
-#            -p 27017-27019:27017-27019 mongo:4.0.4
+docker run -d \
+           --name ms-rabbit \
+           --hostname ms-rabbit \
+           --net ms-network \
+           -p 5672:5672 \
+           -p 15672:15672 \
+           rabbitmq:3-management;
+docker run -d \
+           --name ms-mongodb \
+           --hostname ms-mongodb \
+           --net ms-network \
+           -p 27017-27019:27017-27019 mongo:4.0.4
 #curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 #sudo apt-get install -y nodejs
 # 

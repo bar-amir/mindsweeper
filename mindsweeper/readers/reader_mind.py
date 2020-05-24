@@ -7,20 +7,35 @@ from . import proto_reader
 
 @proto_reader
 def mind(path, proto):
+    '''
+    A reader-function that reads `.mind` files.
+    It converts each message to JSON and yields it.
+    Support for gzipped `.mind.gz` files is provided.
+    `.mind` files are assumed to always have the following structure:
+        * A single file contains the data of a single sweep
+        * Each message is preceded by a `uint32` of the message size
+        * First message is always a User message
+        * The other messages are snapshot results: Pose, ColorImage, DepthImage and Feelings
+    '''
+    if not proto:
+        raise ModuleNotFoundError(f"Protobuf module not found.")
     if path.endswith('.gz'):
         open_func = gzip.open
     else:
         open_func = open
     snapshots_counter = 0
+    messages_counter = 0
     with open_func(path, 'rb') as f:
-        click.echo(click.style('Getting things ready...', fg='yellow'))
-        sweep_start = None
-        sweep_end = None
+        # goes through the file twice: first time to generate user and sweep
+        # messages, second time for results messages
+        sweep_start = None  # earliest snapshot in sweep
+        sweep_end = None  # latest snapshot in sweep
         msg_len_bytes = f.read(4)
-        cursor_snapshots = 4 + struct.unpack('I', msg_len_bytes)[0]
+        cursor_snapshots = 4 + struct.unpack('I', msg_len_bytes)[0]  # return to this position after first file iteration
         while len(msg_len_bytes) > 0:
             msg_len = struct.unpack('I', msg_len_bytes)[0]
             if (f.tell() == 4):
+                # first message is always a User message
                 user = proto.User()
                 user.ParseFromString(f.read(msg_len))
                 msg = {
@@ -34,6 +49,7 @@ def mind(path, proto):
                         'gender': user.gender,
                     }
                 }
+                messages_counter += 1
                 yield msg
             else:
                 snapshot = proto.Snapshot()
@@ -55,11 +71,12 @@ def mind(path, proto):
                 'numOfSnapshots': snapshots_counter
             }
         }
+        messages_counter += 1
         yield msg
-        f.seek(cursor_snapshots)
+        f.seek(cursor_snapshots)  # reposition the cursor to right after the user message for second iteration
         with click.progressbar(length=snapshots_counter,
                                label=click.style(
-                                   'Uploading sweep...',
+                                   'Uploading file...',
                                    fg='yellow')) as bar:
             msg_len_bytes = f.read(4)
             while len(msg_len_bytes) > 0:
@@ -86,6 +103,7 @@ def mind(path, proto):
                         'format': 'mind'
                     }
                 }
+                messages_counter += 1
                 yield msg
                 msg = {
                     'type': 'colorImage',
@@ -99,6 +117,7 @@ def mind(path, proto):
                         'format': 'mind'
                     }
                 }
+                messages_counter += 1
                 yield msg
                 msg = {
                     'type': 'depthImage',
@@ -113,6 +132,7 @@ def mind(path, proto):
                         'format': 'mind'
                     }
                 }
+                messages_counter += 1
                 yield msg
                 msg = {
                     'type': 'feelings',
@@ -127,7 +147,8 @@ def mind(path, proto):
                         'format': 'mind'
                     }
                 }
+                messages_counter += 1
                 yield msg
                 bar.update(1)
                 msg_len_bytes = f.read(4)
-    raise StopIteration()
+

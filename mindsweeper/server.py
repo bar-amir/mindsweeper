@@ -14,28 +14,36 @@ def main():
     pass
 
 
-@main.command()
+def run_server(host='127.0.0.1',
+               port=8000,
+               publish=None):
+    '''listen on host:port and pass received messages to publish'''
+    global publish_func
+    if not publish:
+        click.echo("Error: Missing argument 'publish'")
+        return
+    else:
+        publish_func = publish
+    app.run(host=host, port=port)
+
+
+@main.command(name='run-server')
 @click.option('-h', '--host', default='127.0.0.1')
 @click.option('-p', '--port', default=8000)
 @click.argument('message_queue_url', nargs=1, default=None)
-def run_server(host='127.0.0.1',
-               port=8000,
-               publish=None,
-               message_queue_url=None):
-    '''listen on host:port and pass received messages to publish'''
+def run_server_command(host, port, message_queue_url):
     global publish_func
     mq = MessageQueue(message_queue_url)
-    if not publish:
-       publish_func = mq.publish
-    else:
-       publish_func = publish
-    app.run(host=host, port=port, debug=True)
+    publish_func = mq.publish
+    app.run(host=host, port=port)
     # mq.close()
 
 
 @app.route('/upload', methods=['POST'])
 def upload():
     msg = bson.decode(request.get_data())
+    if msg['type'] == 'hello':
+        return 'HELLO'
     if msg['type'] in ['colorImage', 'depthImage']:
         if msg['type'] == 'depthImage':
             floatlist = msg['data']['data']

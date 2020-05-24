@@ -1,46 +1,74 @@
 import click
-import importlib
-from pathlib import Path
 import sys
-from ..utils import config
 from emoji import emojize
+from importlib import import_module
+from pathlib import Path
+from ..utils.config import PROJECT_ROOT
 
 
 class Reader:
+    '''
+    Convert to JSON messages stored in `path` and iterates through them.
+    Readers use reader-functions to handle the file in `path`.
+    Each reader-function handles a different file format,
+    which it identifies according to the file's extension.
+    '''
     def __init__(self, path):
-        reader = find_reader(path)
-        self.gen = reader(path)
+        reader_func = find_reader(path)
+        if not reader_func:
+            raise ModuleNotFoundError('Reader-function not found.')
+        self.gen = reader_func(path)
 
     def __iter__(self):
-        try:
-            yield from self.gen
-        except StopIteration:
-            click.echo(click.style(emojize(
-                'Uploaded all available data. Goodbye. :waving_hand:'),
-                fg='green'))
-
-
-def find_reader(path):
-    fmt, *ext = Path(path).suffixes
-    fmt = fmt[1:]
-    root = config.PROJECT_ROOT / 'mindsweeper/readers'
-    sys.path.insert(0, str(root))
-    name = f'mindsweeper.readers.reader_{fmt}'
-    importlib.import_module(name, package=root.name)
-    return sys.modules[name].__dict__[fmt]
-
-
-def find_proto_module(fmt):
-    '''Returns the module generated for file extension'''
-    root = config.PROJECT_ROOT / 'mindsweeper/readers/protos/code'
-    sys.path.insert(0, str(root))
-    name = f'mindsweeper.readers.protos.code.{fmt}_pb2'
-    importlib.import_module(name, package=root.name)
-    return sys.modules[name]
+        yield {'type': 'hello'}
+        while True:
+            try:
+                yield from self.gen
+            except StopIteration as e:
+                print('stop iteration??')
+                raise e
 
 
 def proto_reader(func):
+    '''
+    Used to decorate reader-functions that reads protobuf files.
+    These reader functions could assist `_pb2.py` files, generated
+    by the gRPC module.
+    '''
     def wrapper(path):
-        proto = find_proto_module(func.__name__)
-        return func(path, proto)
+        proto_module = find_proto_module(func.__name__)
+        return func(path, proto_module)
     return wrapper
+
+
+def find_proto_module(fmt):
+    '''
+    Return module generated for handling `fmt` protobufs.
+    Returns `None` if not found
+    '''
+    root = PROJECT_ROOT / 'mindsweeper/readers/protos/code'
+    sys.path.insert(0, str(root))
+    name = f'mindsweeper.readers.protos.code.{fmt}_pb2'
+    try:
+        import_module(name, package=root.name)
+    except ModuleNotFoundError:
+        return None
+    proto_module = sys.modules[name]
+    return proto_module
+
+
+def find_reader(path):
+    '''
+    Return the reader-function that reads `path`.
+    Returns `None` if not found.
+    '''
+    fmt, *ext = Path(path).suffixes
+    fmt = fmt[1:]
+    root = PROJECT_ROOT / 'mindsweeper/readers'
+    sys.path.insert(0, str(root))
+    name = f'mindsweeper.readers.reader_{fmt}'
+    try:
+        import_module(name, package=root.name)
+    except ModuleNotFoundError:
+        return None
+    return sys.modules[name].__dict__[fmt]
