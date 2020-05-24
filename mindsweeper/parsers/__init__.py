@@ -1,7 +1,7 @@
 import click
 import importlib
 import sys
-from ..utils import config
+from ..utils.config import PROJECT_ROOT
 import bson
 
 
@@ -11,7 +11,7 @@ def find_parser(parser_name):
         func (function): The parser-function `parser_name`, found in 'parser_`parser_name`.py'.
         msg_types (set): `func`'s `msg_types`, i.e. the messages this parser-function handles. 
     '''
-    root = config.PROJECT_ROOT / 'mindsweeper/parsers'
+    root = PROJECT_ROOT / 'mindsweeper/parsers'
     sys.path.insert(0, str(root))
     name = f'mindsweeper.parsers.parser_{parser_name}'
     importlib.import_module(name, package=root.name)

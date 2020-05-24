@@ -39,8 +39,10 @@ def upload(msg):
 def test_upload_user_msg():
     upload(mg.create_user_msg())
 
-def test_upload_color_image_msg():   
+
+def test_upload_color_image_msg():
     upload(mg.create_color_image_msg())
+
 
 def test_upload_pose_msg():
     upload(mg.create_pose_msg())
