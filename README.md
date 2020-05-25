@@ -5,9 +5,25 @@
 [![Documentation Status](https://readthedocs.org/projects/mindsweeper/badge/?version=latest)](https://mindsweeper.readthedocs.io/en/latest/?badge=latest)
 
 
-Installation
+## Installation
 
-Clone the repository
+First, clone the repository and enter the project's root folder:
+```
+git clone https://github.com/bar-amir/mindsweeper.git
+cd mindsweeper
+```
+
+Grant execution permissions to all scripts:
+```
+chmod a=rx -R scripts 
+```
+
+### Running locally
+```
+
+
+### Running using Docker Compose
+Just use docker-compose up
 
 cd mindsweeper
 
