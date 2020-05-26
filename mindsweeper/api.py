@@ -2,11 +2,14 @@ import click
 import datetime
 import json
 from flask import Flask, send_file
+from flask_cors import CORS, cross_origin
 from .drivers import Database
 from .utils import aux
 
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 @click.group()
@@ -15,27 +18,29 @@ def main():
 
 
 @app.route('/users')
+@cross_origin()
 def get_users():
     collection = db.find('users', {}, {'_id': 1, 'username': 1})
     result = []
     for user in collection:
-        gender = {
-            0: 'Male',
-            1: 'Female',
-            2: 'Other'
-        }
+        # gender = {
+        #     0: 'Male',
+        #     1: 'Female',
+        #     2: 'Other'
+        # }
         u = {
             'userId': user['_id'],
             'username': user['username'],
-            'birthday': datetime.datetime.fromtimestamp(
-                user['birthday']).strftime('%Y-%m-%d'),
-            'gender:': gender[user['gender']]
+            # 'birthday': datetime.datetime.fromtimestamp(
+            #     user['birthday']).strftime('%Y-%m-%d'),
+            # 'gender:': gender[user['gender']]
         }
         result.append(u)
     return json.dumps(result)
 
 
 @app.route('/users/<user_id>/sweeps')
+@cross_origin()
 def get_sweeps(user_id):
     collection = db.find('sweeps', {'userId': int(user_id)})
     result = []
@@ -55,6 +60,7 @@ def get_sweeps(user_id):
 
 
 @app.route('/users/<user_id>/sweeps/<sweep_id>')
+@cross_origin()
 def get_sweep(user_id, sweep_id):
     sweep = db.find_one('sweeps', {'_id': sweep_id})
     result = {
@@ -71,6 +77,7 @@ def get_sweep(user_id, sweep_id):
 
 
 @app.route('/users/<user_id>/sweeps/<sweep_id>/snapshots')
+@cross_origin()
 def get_sweep_snapshots(user_id, sweep_id):
     sweep = db.find_one('sweeps', {'_id': sweep_id})
     collection = db.find('snapshots', {
@@ -90,6 +97,7 @@ def get_sweep_snapshots(user_id, sweep_id):
 
 
 @app.route('/users/<user_id>')
+@cross_origin()
 def get_user(user_id):
     user = db.find_one('users', {'_id': int(user_id)}, {'snapshots': 0})
     gender = {
@@ -108,6 +116,7 @@ def get_user(user_id):
 
 
 @app.route('/users/<user_id>/snapshots')
+@cross_origin()
 def get_user_snapshots(user_id):
     collection = db.find('snapshots',
                         {'userId': int(user_id)},
@@ -125,6 +134,7 @@ def get_user_snapshots(user_id):
 
 
 @app.route('/users/<user_id>/snapshots/<snapshot_id>')
+@cross_origin()
 def get_user_snapshot(user_id, snapshot_id):
     snapshot = db.find_one('snapshots', {'_id': snapshot_id})
     result = {
@@ -138,6 +148,7 @@ def get_user_snapshot(user_id, snapshot_id):
 
 
 @app.route('/users/<user_id>/snapshots/<snapshot_id>/<result_name>')
+@cross_origin()
 def get_result(user_id, snapshot_id, result_name):
     snapshot = db.find_one('snapshots', {'_id': snapshot_id})
     name = aux.snake_to_lower_camel(result_name, '-')
@@ -152,6 +163,7 @@ def get_result(user_id, snapshot_id, result_name):
 
 
 @app.route('/users/<user_id>/snapshots/<snapshot_id>/<result_name>/data')
+@cross_origin()
 def get_result_data(user_id, snapshot_id, result_name):
     snapshot = db.find_one('snapshots', {'_id': snapshot_id})
     name = aux.snake_to_lower_camel(result_name, '-')

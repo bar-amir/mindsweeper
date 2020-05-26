@@ -8,3 +8,5 @@ source/
 tests/
 */__pycache__/
 *.py[cod]
+mindsweeper/gui
+mindsweeper/gui.py
