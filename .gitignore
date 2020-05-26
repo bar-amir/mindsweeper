@@ -9,7 +9,7 @@ media/*
 mindsweeper/save.pg.py
 scripts/start_over_db.py
 scripts/start.sh
-mindsweeper/gui/mindsweeper/node_modules
+mindsweeper/gui/node_modules
 mindsweeper/client copy.py
 mindsweeper/server copy.py
 mindsweeper/utils/reader copy.py

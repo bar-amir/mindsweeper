@@ -17,23 +17,76 @@ def main():
 @app.route('/users')
 def get_users():
     collection = db.find('users', {}, {'_id': 1, 'username': 1})
-    return json.dumps(list(collection))
+    result = []
+    for user in collection:
+        gender = {
+            0: 'Male',
+            1: 'Female',
+            2: 'Other'
+        }
+        u = {
+            'userId': user['_id'],
+            'username': user['username'],
+            'birthday': datetime.datetime.fromtimestamp(
+                user['birthday']).strftime('%Y-%m-%d'),
+            'gender:': gender[user['gender']]
+        }
+        result.append(u)
+    return json.dumps(result)
 
 
 @app.route('/users/<user_id>/sweeps')
 def get_sweeps(user_id):
     collection = db.find('sweeps', {'userId': int(user_id)})
-    return json.dumps(list(collection))
+    result = []
+    for sweep in collection:
+        s = {
+            'sweepId': sweep['_id'],
+            'start': datetime.datetime.fromtimestamp(
+                int(sweep['sweepStart'])/1000).strftime(
+                    '%Y-%m-%d %H:%M:%S.%f'),
+            'end': datetime.datetime.fromtimestamp(
+                int(sweep['sweepEnd'])/1000).strftime(
+                    '%Y-%m-%d %H:%M:%S.%f'),
+            'numOfSnapshots': sweep['numOfSnapshots']
+            }
+        result.append(s)
+    return json.dumps(result)
+
+
+@app.route('/users/<user_id>/sweeps/<sweep_id>')
+def get_sweep(user_id, sweep_id):
+    sweep = db.find_one('sweeps', {'_id': sweep_id})
+    result = {
+        'sweepId': sweep['_id'],
+        'start': datetime.datetime.fromtimestamp(
+            int(sweep['sweepStart'])/1000).strftime(
+                '%Y-%m-%d %H:%M:%S.%f'),
+        'end': datetime.datetime.fromtimestamp(
+            int(sweep['sweepEnd'])/1000).strftime(
+                '%Y-%m-%d %H:%M:%S.%f'),
+        'numOfSnapshots': sweep['numOfSnapshots']
+    }
+    return json.dumps(result)
 
 
 @app.route('/users/<user_id>/sweeps/<sweep_id>/snapshots')
 def get_sweep_snapshots(user_id, sweep_id):
     sweep = db.find_one('sweeps', {'_id': sweep_id})
-    print(sweep)
-    collection = db['snapshots'].find(
-        {'$and': [{'datetime': {'$gte': sweep['sweepStart']}},
+    collection = db.find('snapshots', {
+        '$and': [{'datetime': {'$gte': sweep['sweepStart']}},
                   {'datetime': {'$lte': sweep['sweepEnd']}}]})
-    return json.dumps(list(collection))
+    result = []
+    for snapshot in collection:
+        s = {
+            'snapshotId': snapshot['_id'],
+            'datetime': datetime.datetime.fromtimestamp(
+                int(snapshot['datetime'])/1000).strftime(
+                    '%Y-%m-%d %H:%M:%S.%f'),
+            'results': list(snapshot['results'].keys())
+        }
+        result.append(s)
+    return json.dumps(result)
 
 
 @app.route('/users/<user_id>')
@@ -51,17 +104,22 @@ def get_user(user_id):
             user['birthday']).strftime('%Y-%m-%d'),
         'gender:': gender[user['gender']]
     }
-    print(u)
     return json.dumps(u)
 
 
 @app.route('/users/<user_id>/snapshots')
 def get_user_snapshots(user_id):
-    snapshots = db.find('snapshots',
+    collection = db.find('snapshots',
                         {'userId': int(user_id)},
                         {'_id': 1, 'datetime': 1}).sort('datetime')
     result = []
-    for s in snapshots:
+    for snapshot in collection:
+        s = {
+            'snapshotId': snapshot['_id'],
+            'datetime': datetime.datetime.fromtimestamp(
+                int(snapshot['datetime'])/1000).strftime(
+                    '%Y-%m-%d %H:%M:%S.%f'),
+        }
         result.append(s)
     return json.dumps(result)
 
