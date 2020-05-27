@@ -49,9 +49,7 @@ Activate virtual enviroment:
 $ source .env/bin/activate
 ```
 
-## Running locally
-
-### With Docker
+## Running with Docker
 Run run-pipeline.sh
 ```bash
 $ scripts/run-pipeline.sh
@@ -60,12 +58,10 @@ This script will:
 * Configure the GUI for running in a container
 * Build and run all the services with Docker Compose
 
-### Locally
+When all services are running, you can upload messages to Mindsweeper via http://localhost:8000, access the web interface via http://localhost:8080, and consume the API via http://localhost:5000.
 
-
-Now you can start any of the services using Python API or the CLI and upload a raw file to the server.
-
-## Sample File
-Download sample.mind.gz from here. [reupload to GCP]
-from mindsweeper root folder, run
-upload-sample path_to_sample/sample.mind.gz
+# Basic usage
+Uploading a `.mind` of `.mind.gz` file to Mindsweeper using the client's CLI:
+```bash
+$ python -m mindsweeper.client upload-sample /path/to/file
+```
