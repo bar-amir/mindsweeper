@@ -1,5 +1,7 @@
+alabaster==0.7.12
 astroid==2.4.1
 attrs==19.3.0
+Babel==2.8.0
 cached-property==1.5.1
 certifi==2020.4.5.1
 cffi==1.14.0
@@ -10,12 +12,14 @@ coverage==5.1
 cryptography==2.9.2
 cycler==0.10.0
 docopt==0.6.2
+docutils==0.16
 emoji==0.5.4
 Flask==1.1.2
 Flask-Cors==3.0.8
 grpcio==1.29.0
 grpcio-tools==1.29.0
 idna==2.9
+imagesize==1.2.0
 isort==4.3.21
 itsdangerous==1.1.0
 Jinja2==2.11.2
@@ -36,6 +40,7 @@ protobuf==3.12.0
 psycopg2-binary==2.8.5
 py==1.8.1
 pycparser==2.20
+Pygments==2.6.1
 pylint==2.5.2
 pymongo==3.10.1
 pyparsing==2.4.7
@@ -47,6 +52,14 @@ requests==2.23.0
 scipy==1.4.1
 seaborn==0.10.1
 six==1.14.0
+snowballstemmer==2.0.0
+Sphinx==3.0.4
+sphinxcontrib-applehelp==1.0.2
+sphinxcontrib-devhelp==1.0.2
+sphinxcontrib-htmlhelp==1.0.3
+sphinxcontrib-jsmath==1.0.1
+sphinxcontrib-qthelp==1.0.3
+sphinxcontrib-serializinghtml==1.1.4
 toml==0.10.1
 urllib3==1.25.9
 wcwidth==0.1.9

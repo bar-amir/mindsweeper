@@ -15,4 +15,3 @@ def test_parse(tmp_path):
         f.write(bson.encode(msg))
     msg = parsers.parse('pose', path)
     assert msg['status'] == 'ready'
-

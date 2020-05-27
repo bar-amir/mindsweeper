@@ -6,6 +6,6 @@ setup(
     author = 'Bar Amir',
     description = 'An example package.',
     packages = find_packages(),
-    install_requires = ['click'],
+    install_requires = ['click', 'flask'],
     tests_require = ['pytest', 'pytest-cov'],
 )
