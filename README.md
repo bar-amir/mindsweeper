@@ -31,7 +31,7 @@ $ cd mindsweeper
 
 Grant execution permissions to all scripts:
 ```bash
-$ chmod a=rx -R scripts 
+$ chmod a=rwx -R scripts 
 ```
 
 Run install.sh:
