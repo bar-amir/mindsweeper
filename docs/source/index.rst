@@ -6,7 +6,7 @@
 Welcome to Mindsweeper's documentation!
 =======================================
 
-.. automodule:: mindsweeper
+.. automodule:: mindsweeper.client
     :members: 
 
 .. toctree::
