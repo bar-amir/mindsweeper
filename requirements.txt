@@ -12,6 +12,7 @@ cycler==0.10.0
 docopt==0.6.2
 emoji==0.5.4
 Flask==1.1.2
+Flask-Cors==3.0.8
 grpcio==1.29.0
 grpcio-tools==1.29.0
 idna==2.9
