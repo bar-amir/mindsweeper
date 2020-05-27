@@ -11,23 +11,32 @@
 </p>
 
 ## About
+## Prerequisites
+```
+Docker
+docker-compose
+Node
+npm
+Python
+```
 
 ## Installation
 
 Clone the repository and enter the project's root folder:
 ```bash
-git clone https://github.com/bar-amir/mindsweeper.git
-cd mindsweeper
+$ git clone https://github.com/bar-amir/mindsweeper.git
+...
+$ cd mindsweeper
 ```
 
 Grant execution permissions to all scripts:
 ```bash
-chmod a=rx -R scripts 
+$ chmod a=rx -R scripts 
 ```
 
 Run install.sh:
 ```bash
-scripts/install.sh
+$ scripts/install.sh
 ```
 This script will:
 * Create a virtual enviroment
@@ -37,7 +46,7 @@ This script will:
 
 Activate virtual enviroment:
 ```bash
-source .env/bin/activate
+$ source .env/bin/activate
 ```
 
 ## Running locally
@@ -45,7 +54,7 @@ source .env/bin/activate
 ### With Docker
 Run run-pipeline.sh
 ```bash
-scripts/run-pipeline.sh
+$ scripts/run-pipeline.sh
 ```
 This script will:
 * Configure the GUI for running in a container
