@@ -15,19 +15,18 @@
 ## Installation
 
 Clone the repository and enter the project's root folder:
-```
+```bash
 git clone https://github.com/bar-amir/mindsweeper.git
 cd mindsweeper
 ```
 
 Grant execution permissions to all scripts:
-```
+```bash
 chmod a=rx -R scripts 
 ```
 
 Run install.sh:
-```
-https://github.com/bar-amir/mindsweeper/blob/master/README.md
+```bash
 scripts/install.sh
 ```
 This script will:
@@ -39,7 +38,7 @@ This script will:
 
 ### With Docker
 Run run-pipeline.sh
-```
+```bash
 scripts/run-pipeline.sh
 ```
 This script will:
@@ -48,7 +47,7 @@ This script will:
 ### Locally
 
 Activate virtual enviroment:
-```
+```bash
 source .env/bin/activate
 ```
 Now you can start any of the services using Python API or the CLI and upload a raw file to the server.
