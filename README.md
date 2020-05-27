@@ -30,7 +30,7 @@ Run install.sh:
 https://github.com/bar-amir/mindsweeper/blob/master/README.md
 scripts/install.sh
 ```
-The script will:
+This script will:
 * Create a virtual enviroment
 * Install dependencies, both for Python and Node
 * Compile .proto files
@@ -38,10 +38,12 @@ The script will:
 ## Running locally
 
 ### With Docker
-Simply use Docker Compose:
+Run run-pipeline.sh
 ```
-docker-compose up
+scripts/run-pipeline.sh
 ```
+This script will:
+* 
 
 ### Locally
 
