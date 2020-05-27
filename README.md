@@ -5,12 +5,16 @@
   Mindsweeper
 </h3>
 <p align="center">
-  <a target="_blank" title="Build Status" href="https://travis-ci.com/bar-amir/mindsweeper"><img src="https://travis-ci.com/bar-amir/mindsweeper.svg?branch=master"></a>
-  <a target="_blank" title="Codecov" href="https://codecov.io/gh/bar-amir/mindsweeper"><img src="https://codecov.io/gh/bar-amir/mindsweeper/branch/master/graph/badge.svg"></a>
-  <a target="_blank" title="Documentation Status" href="https://mindsweeper.readthedocs.io/en/latest/?badge=latest"><img src="https://readthedocs.org/projects/mindsweeper/badge/?version=latest"></a>
+  <a title="Build Status" href="https://travis-ci.com/bar-amir/mindsweeper"><img src="https://travis-ci.com/bar-amir/mindsweeper.svg?branch=master"></a>
+  <a title="Codecov" href="https://codecov.io/gh/bar-amir/mindsweeper"><img src="https://codecov.io/gh/bar-amir/mindsweeper/branch/master/graph/badge.svg"></a>
+  <a title="Documentation Status" href="https://mindsweeper.readthedocs.io/en/latest/?badge=latest"><img src="https://readthedocs.org/projects/mindsweeper/badge/?version=latest"></a>
 </p>
 
 ## About
+Final project submission for the course "Advanced Systems Design". (Tel Aviv University, 2020)
+
+Full documentation is available [here](https://mindsweeper.readthedocs.io/).
+
 ## Prerequisites
 ```
 Docker v19.03.6
@@ -29,7 +33,7 @@ $ git clone https://github.com/bar-amir/mindsweeper.git
 $ cd mindsweeper
 ```
 
-Grant execution permissions to all scripts:
+Grant execution permission to all scripts under the `scripts` folder:
 ```bash
 $ chmod a=rwx -R scripts 
 ```
@@ -44,14 +48,12 @@ This script will:
 * Update npm and install dependencies
 * Compile .proto files
 
-Activate virtual enviroment:
+Activate the virtual enviroment:
 ```bash
 $ source .env/bin/activate
 ```
 
-## Running locally
-
-### With Docker
+## Running with Docker
 Run run-pipeline.sh
 ```bash
 $ scripts/run-pipeline.sh
@@ -60,12 +62,11 @@ This script will:
 * Configure the GUI for running in a container
 * Build and run all the services with Docker Compose
 
-### Locally
+When all services are running, you can upload messages to Mindsweeper via http://localhost:8000, access the web interface via http://localhost:8080, and consume the API via http://localhost:5000.
 
-
-Now you can start any of the services using Python API or the CLI and upload a raw file to the server.
-
-## Sample File
-Download sample.mind.gz from here. [reupload to GCP]
-from mindsweeper root folder, run
-upload-sample path_to_sample/sample.mind.gz
+## Basic usage
+Upload a `.mind` of `.mind.gz` file containing snapshots to Mindsweeper using the client's CLI:
+```bash
+$ python -m mindsweeper.client upload-sample /path/to/file
+```
+Mindsweeper would then parse the files and upload the snapshots to its database. You could then view them at http://localhost:8080.
