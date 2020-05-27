@@ -65,7 +65,7 @@ This script will:
 When all services are running, you can upload messages to Mindsweeper via http://localhost:8000, access the web interface via http://localhost:8080, and consume the API via http://localhost:5000.
 
 ## Basic usage
-Upload a `.mind` of `.mind.gz` file containing snapshots to Mindsweeper using the client's CLI:
+Upload a `.mind` or a `.mind.gz` file containing snapshots to Mindsweeper using the client's CLI:
 ```bash
 $ python -m mindsweeper.client upload-sample /path/to/file
 ```
