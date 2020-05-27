@@ -1,24 +1,14 @@
-.. Mindsweeper documentation master file, created by
-   sphinx-quickstart on Wed May 27 14:28:48 2020.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Client
-=======================================
-
-.. automodule:: mindsweeper
-   :members:
+==============
 
 .. automodule:: mindsweeper.client
    :members:
+   :undoc-members:
+   :show-inheritance:
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+CLI
+--------
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. click:: mindsweeper.client:main
+   :prog: python -m mindsweeper.client
+   :show-nested:

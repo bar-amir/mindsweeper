@@ -7,17 +7,24 @@ Welcome to Mindsweeper's documentation!
 =======================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 1
+   :caption: Services:
 
-   server
-   client
-   readers
-   parsers
-   drivers
-   gui
-   cli
    api
+   gui
+   parsers
+   saver
+   server
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Services:
+
+   cli
+   client
+   drivers
+   readers
+   utils
 
 Indices and tables
 ==================
