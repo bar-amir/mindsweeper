@@ -1,7 +1,21 @@
-.snapshot {
+.snapshot.color-image {
     width: 100%;
     height: 100vh;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+nav.snapshot-header,
+.snapshot-card {
+    .list-group, .list-group-item {
+        background-color: transparent;
+    }
+    img {
+        user-select: none;
+        -webkit-user-select: none;
+    }
+    background-color: rgba(233, 236, 239, 0.7) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
 }

@@ -22,7 +22,6 @@ services:
     image: mindsweeper
     volumes:
       - media:/media
-      - .:/code
     ports:
       - '8000:8000'
     depends_on:
@@ -85,15 +84,13 @@ services:
 
   ms_gui:
     build:
-      context: .
-      dockerfile: ./mindsweeper/gui/Dockerfile
+      context: ./mindsweeper/gui
     image: msgui
-    volumes:
-      - .:/code
     ports:
       - '8080:8080'
     depends_on:
       - ms_api
+    stdin_open: true
 
 volumes:
   media:

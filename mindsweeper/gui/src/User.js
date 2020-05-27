@@ -11,7 +11,6 @@ import {
   Link,
   useRouteMatch,
   useParams,
-  Redirect
 } from "react-router-dom";
 import { Table, Breadcrumb } from 'react-bootstrap';
 
@@ -24,7 +23,6 @@ function User(props) {
   
   useEffect(() => {
     async function fetchData() {
-      var resNotFound = false
       const result_user = await axios(
         `http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/users/${userId}`,
       )
@@ -49,9 +47,9 @@ function User(props) {
           </Route>
           <Route path={match.path}>
             <Head />
-            <Header user={user} />
+            <Header variant="light" />
             <Breadcrumb className="m-3">
-              <Breadcrumb.Item><Link to="/users">Users</Link></Breadcrumb.Item>
+              <Breadcrumb.Item><Link title="Users" to="/users">Users</Link></Breadcrumb.Item>
               <Breadcrumb.Item active>{user.username}</Breadcrumb.Item>
             </Breadcrumb>
             <Table striped bordered hover>
@@ -66,7 +64,7 @@ function User(props) {
                 {sweeps.map((sweep, index) => (
                   <tr key={sweep.sweepId}>
                     <td>{index + 1}</td>
-                    <td><Link to={`${user.userId}/sweeps/${sweep.sweepId}`}>{sweep.start}</Link></td>
+                    <td><Link title="Sweep" to={`${user.userId}/sweeps/${sweep.sweepId}`}>{sweep.start}</Link></td>
                     <td>{sweep.numOfSnapshots}</td>
                   </tr>
                 ))}

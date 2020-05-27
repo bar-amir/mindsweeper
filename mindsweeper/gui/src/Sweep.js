@@ -20,7 +20,6 @@ function Sweep(props) {
   const [sweep, setSweep] = useState([]);
   const [snapshots, setSnapshots] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  var body = <Loading />
 
   useEffect(() => {
     async function fetchData() {
@@ -49,11 +48,11 @@ function Sweep(props) {
           </Route>
           <Route path={match.path}>
             <Head />
-            <Header />
+            <Header variant="light" />
             <Breadcrumb className="m-3">
-              <Breadcrumb.Item><Link to="/users">Users</Link></Breadcrumb.Item>
-              <Breadcrumb.Item><Link to={`/users/${props.user.userId}`}>{props.user.username}</Link></Breadcrumb.Item>
-              <Breadcrumb.Item href="#" active>Sweep</Breadcrumb.Item>
+              <Breadcrumb.Item title="Users"><Link to="/users">Users</Link></Breadcrumb.Item>
+              <Breadcrumb.Item title={props.user.username}><Link to={`/users/${props.user.userId}`}>{props.user.username}</Link></Breadcrumb.Item>
+              <Breadcrumb.Item active>Sweep</Breadcrumb.Item>
             </Breadcrumb>
             <div>
                 <Table striped bordered hover>
@@ -67,7 +66,7 @@ function Sweep(props) {
                     {snapshots.map((snapshot, index) => (
                       <tr key={snapshot.snapshotId}>
                         <td>{index + 1}</td>
-                        <td><Link to={`${sweepId}/snapshots/${snapshot.snapshotId}`}>{snapshot.datetime}</Link></td>
+                        <td><Link title="Snapshot" to={`${sweepId}/snapshots/${snapshot.snapshotId}`}>{snapshot.datetime}</Link></td>
                       </tr>
                     ))}
                   </tbody>

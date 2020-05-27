@@ -1,25 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
   NavLink,
-  Link,
-  useRouteMatch,
-  useParams
+  Link
 } from "react-router-dom";
-import { Helmet } from "react-helmet";
-import { Nav, Navbar, NavItem } from 'react-bootstrap';
+import { Nav, Navbar } from 'react-bootstrap';
 
-function Header() {
+function Header(props) {
   return (
-    <Navbar bg="light" expand="lg">
-      <Navbar.Brand>Mindsweeper</Navbar.Brand>
+    <Navbar className={props.className} bg={props.variant} variant={props.variant} expand="lg">
+      <Navbar.Brand><Link className="navbar-brand" title="Mindsweeper" to="/">Mindsweeper</Link></Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link><NavLink exact activeClassName="nav-link-active" to="/">Home</NavLink></Nav.Link>
-          <Nav.Link><NavLink activeClassName="nav-link-active" to="/users/">Users</NavLink></Nav.Link>
+          <Nav.Link><NavLink title="Home" exact className="nav-link" activeClassName="nav-link-active" to="/">Home</NavLink></Nav.Link>
+          <Nav.Link><NavLink title="Users" className="nav-link" activeClassName="nav-link-active" to="/users/">Users</NavLink></Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

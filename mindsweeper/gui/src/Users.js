@@ -5,12 +5,10 @@ import Header from './Header';
 import User from './User';
 import Loading from './Loading';
 import {
-  // BrowserRouter as Router,
   Switch,
   Route,
   Link,
   useRouteMatch,
-  // useParams
 } from "react-router-dom";
 import { Table, Breadcrumb } from 'react-bootstrap';
 
@@ -18,7 +16,6 @@ function Users() {
   let match = useRouteMatch();
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  var body = <Loading />
   
   useEffect(() => {
     async function fetchData() {
@@ -43,7 +40,7 @@ function Users() {
           </Route>
           <Route path={match.path}>
             <Head />
-            <Header />
+            <Header variant="light" />
             <Breadcrumb className="m-3">
               <Breadcrumb.Item active>Users</Breadcrumb.Item>
             </Breadcrumb>
@@ -58,7 +55,7 @@ function Users() {
                 {users.map(user => (
                   <tr key={user.userId}>
                     <td>{user.userId}</td>
-                    <td><Link to={`/users/${user.userId}`}>{user.username}</Link></td>
+                    <td><Link title={user.username} to={`/users/${user.userId}`}>{user.username}</Link></td>
                   </tr>
                 ))}
               </tbody>

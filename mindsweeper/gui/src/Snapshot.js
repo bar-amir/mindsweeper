@@ -23,14 +23,13 @@ function normalizeFeelings(value){
 }
 
 function Snapshot(props) {
-  let { userId, sweepId, snapshotId } = useParams();
+  let { userId, snapshotId } = useParams();
   const [snapshot, setSnapshot] = useState({});
   const [pose, setPose] = useState({});
   const [feelings, setFeelings] = useState({});
   const [colorImage, setColorImage] = useState({});
   const [depthImage, setDepthImage] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [key, setKey] = useState(0);
 
   useEffect(() => {
     async function fetchData() {
@@ -73,7 +72,7 @@ function Snapshot(props) {
     var nextId;
     var prevId;
     for (i = 0; i < props.snapshots.length; i++) {
-      if (props.snapshots[i].snapshotId == snapshotId) {
+      if (props.snapshots[i].snapshotId === snapshotId) {
         if (i > 0) {
           prevId = props.snapshots[i - 1].snapshotId
         }
@@ -110,40 +109,39 @@ function Snapshot(props) {
     return (
       <div>
         <Head />
-        <div className="snapshot" style={{backgroundImage: `url(${colorImage.data})`}}>
-          <Header />
-          <Breadcrumb className="m-3">
-            <Breadcrumb.Item href="#"><Link to="/users">Users</Link></Breadcrumb.Item>
-            <Breadcrumb.Item href="#"><Link to={`/users/${props.user.userId}`}>{props.user.username}</Link></Breadcrumb.Item>
-            <Breadcrumb.Item href="#"><Link to={`/users/${props.user.userId}/sweeps/${props.sweep.sweepId}`}>Sweep</Link></Breadcrumb.Item>
-            <Breadcrumb.Item href="#" active>Snapshot</Breadcrumb.Item>
-          </Breadcrumb>
-          <Card className="m-3" style={{ width: '18rem' }}>
-            <Card.Img variant="top" src={depthImage.data} />
+        <div className="snapshot color-image" style={{backgroundImage: `url(${colorImage.data})`}}>
+          <Header variant="light" className="snapshot-header" />
+          <Card className="snapshot-card m-3" style={{ width: '18rem' }}>
+            <Card.Img title="Depth image" variant="top" src={depthImage.data} />
             <ListGroup className="list-group-flush">
-              <ListGroupItem>{snapshot.datetime}</ListGroupItem>
+              <ListGroupItem title="Date taken">{snapshot.datetime}</ListGroupItem>
               <ListGroupItem>
                 <OverlayTrigger rootClose="true" trigger="click" placement="top" overlay={popOverTranslation}>
-                  <Button className="mr-1">
+                  <Button title="Translation" className="mr-1">
                     <FontAwesomeIcon icon={faExpandArrowsAlt}/>
                   </Button>
                 </OverlayTrigger>
                 <OverlayTrigger rootClose="true" trigger="click" placement="top" overlay={popOverRotation}>
-                  <Button>
+                  <Button title="Rotation">
                     <FontAwesomeIcon icon={faSyncAlt}/>
                   </Button>
                 </OverlayTrigger>
               </ListGroupItem>
               <ListGroupItem>
-                <ProgressBar className="mb-1" now={normalizeFeelings(feelings.hunger)} label="Hunger" />
-                <ProgressBar className="mb-1" now={normalizeFeelings(feelings.thirst)} label="Thirst" />
-                <ProgressBar className="mb-1" now={normalizeFeelings(feelings.exhaustion)} label="Exhaustion" />
-                <ProgressBar now={normalizeFeelings(feelings.happiness)} label="Happiness" />
+                <ProgressBar title={feelings.hunger} className="mb-1" now={normalizeFeelings(feelings.hunger)} label="Hunger" />
+                <ProgressBar title={feelings.thirst} className="mb-1" now={normalizeFeelings(feelings.thirst)} label="Thirst" />
+                <ProgressBar title={feelings.exhaustion} className="mb-1" now={normalizeFeelings(feelings.exhaustion)} label="Exhaustion" />
+                <ProgressBar title={feelings.happiness} now={normalizeFeelings(feelings.happiness)} label="Happiness" />
               </ListGroupItem>
             </ListGroup>
             <Card.Body>
-              <Card.Link href="#">{prevId ? <Link to={`../snapshots/${prevId}`}>Previous</Link> : (<span>Previous</span>)}</Card.Link>
-              <Card.Link href="#">{nextId ? <Link to={`../snapshots/${nextId}`}>Next</Link> : (<span>Next</span>)}</Card.Link>
+              <div className="d-flex justify-content-between">
+                <div>
+                {prevId ? <Card.Link href="#"><Link title="Previous snapshot" to={`../snapshots/${prevId}`}>Previous</Link></Card.Link> : ''}
+                {nextId ? <Card.Link href="#"><Link title="Next snapshot" to={`../snapshots/${nextId}`}>Next</Link></Card.Link> : ''}
+                </div>
+                <Card.Link href="#"><Link title="Return to sweep" to={`/users/${props.user.userId}/sweeps/${props.sweep.sweepId}`}>Return</Link></Card.Link>
+              </div>
             </Card.Body>
           </Card>
         </div>
