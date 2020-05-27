@@ -11,6 +11,9 @@
 </p>
 
 ## About
+Final project submission of the course "Advanced Systems Design". (Tel Aviv University, 2020)
+Full documentation is available (here)[https://mindsweeper.readthedocs.io/].
+
 ## Prerequisites
 ```
 Docker v19.03.6
@@ -60,8 +63,9 @@ This script will:
 
 When all services are running, you can upload messages to Mindsweeper via http://localhost:8000, access the web interface via http://localhost:8080, and consume the API via http://localhost:5000.
 
-# Basic usage
-Uploading a `.mind` of `.mind.gz` file to Mindsweeper using the client's CLI:
+## Basic usage
+Upload a `.mind` of `.mind.gz` file containing snapshots to Mindsweeper using the client's CLI:
 ```bash
 $ python -m mindsweeper.client upload-sample /path/to/file
 ```
+Mindsweeper would then parse the files and upload the snapshots to its database. You could then view them at http://localhost:8080.
