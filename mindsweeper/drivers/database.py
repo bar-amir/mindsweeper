@@ -1,5 +1,5 @@
-from ..utils import config
 from .databases import MongoDB
+from ..utils.config import DEFAULT_DATABASE
 
 drivers = {'mongodb://': MongoDB}
 
@@ -7,7 +7,7 @@ drivers = {'mongodb://': MongoDB}
 class Database:
     def __init__(self, url):
         if not url:
-            url = config.DEFAULT_DATABASE
+            url = DEFAULT_DATABASE
         self.driver = find_driver(url)
 
     def upsert(self, msg):

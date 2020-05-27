@@ -3,27 +3,23 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Mindsweeper's documentation!
+Welcome
 =======================================
 
 .. toctree::
-   :maxdepth: 1
-   :caption: Services:
+   :maxdepth: 2
+   :caption: Content:
 
    api
-   gui
-   parsers
-   saver
-   server
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Services:
 
    cli
+   gui
    client
    drivers
+   parsers
    readers
+   saver
+   server
    utils
 
 Indices and tables

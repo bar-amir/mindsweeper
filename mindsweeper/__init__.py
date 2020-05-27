@@ -1,1 +1,0 @@
-'''Mindsweeper module'''

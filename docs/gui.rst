@@ -1,5 +1,5 @@
 GUI
-==============
+=======================================
 
 .. automodule:: mindsweeper.gui
    :members:
@@ -7,7 +7,7 @@ GUI
    :show-inheritance:
 
 CLI
---------
+---------------------------------------
 
 .. click:: mindsweeper.gui:main
    :prog: python -m mindsweeper.gui

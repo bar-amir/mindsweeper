@@ -1,3 +1,5 @@
+'''The CLI module offers command line iterface for consuming the API of Minesweeper, querying its database and printing the results to the console.'''
+
 import click
 import requests
 

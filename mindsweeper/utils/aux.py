@@ -1,9 +1,9 @@
 '''A collection of small helpful functions.'''
-
-import re
+import importlib
 from pathlib import Path
-from . import config
-from .. import parsers
+import re
+import sys
+from .config import PROJECT_ROOT
 
 
 def camel_to_snake(name):
@@ -21,22 +21,39 @@ def snake_to_lower_camel(name, separator='_'):
     return name
 
 
+def find_parser(parser_name):
+    '''
+    Returns:
+        (function, set): A tuple of the parser-function `parser_name`, found in 'parser_`parser_name`.py', and its `msg_types`, i.e. the messages this parser-function handles.
+    '''
+    root = PROJECT_ROOT / 'mindsweeper/parsers'
+    sys.path.insert(0, str(root))
+    name = f'mindsweeper.parsers.parser_{parser_name}'
+    try:
+        importlib.import_module(name, package=root.name)
+        func = sys.modules[name].__dict__[parser_name]
+        msg_types = sys.modules[name].__dict__['msg_types']
+    except ModuleNotFoundError:
+        return None, None
+    return func, msg_types
+
+
 def get_interesting_types():
     '''Return a set of all message types that at least one parser
     is interested in.'''
-    PARSERS_DIR = config.PROJECT_ROOT / 'mindsweeper/parsers'
+    PARSERS_DIR = PROJECT_ROOT / 'mindsweeper/parsers'
     result = set()
     for x in PARSERS_DIR.iterdir():
         if x.name.startswith('parser_'):
             parser_name = x.stem[len('parser_'):]
-            _, msg_types = parsers.find_parser(parser_name)
+            _, msg_types = find_parser(parser_name)
             result = result | msg_types
     return result
 
 
 def get_parsers_list():
     '''Return a list of available parsers according to their filenames.'''
-    PARSERS_DIR = config.PROJECT_ROOT / 'mindsweeper' / 'parsers'
+    PARSERS_DIR = PROJECT_ROOT / 'mindsweeper' / 'parsers'
     parsers = [Path(f.name).stem for f in PARSERS_DIR.iterdir() if f.is_file()]
     parsers.remove('__init__')
     parsers.remove('__main__')
@@ -46,12 +63,12 @@ def get_parsers_list():
 def get_parsers():
     '''Return a list of tuples `(parser_name, msg_types)`, where `msg_types`
     is a set of message types that `parser_name` is interested in.'''
-    PARSERS_DIR = config.PROJECT_ROOT / 'mindsweeper/parsers'
+    PARSERS_DIR = PROJECT_ROOT / 'mindsweeper/parsers'
     result = []
     for f in PARSERS_DIR.iterdir():
         if f.name.startswith('parser_'):
             parser_name = f.stem[len('parser_'):]
-            _, msg_types = parsers.find_parser(parser_name)
+            _, msg_types = find_parser(parser_name)
             result.append((parser_name, msg_types))
     return result
 

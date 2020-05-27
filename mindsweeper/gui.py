@@ -7,6 +7,7 @@ def create_env(host='127.0.0.1',
                port=8080,
                api_host='127.0.0.1',
                api_port=5000):
+    '''Write an `.env` file to the root folder of the GUI interface so it would run and consume from the right hosts and ports.'''
     with open(PROJECT_ROOT / 'mindsweeper/gui/.env', 'w+') as f:
         f.write(f'HOST={host} \n' +
                 f'PORT={port} \n' +
@@ -18,6 +19,7 @@ def run_server(host='127.0.0.1',
                port=8080,
                api_host='127.0.0.1',
                api_port=5000):
+    '''Run a web interface on `host`:`port` that consumes the API at `api_host`:`api_port`.'''
     create_env(host, port, api_host, api_port)
     os.system('cd mindsweeper/gui && npm start')
 

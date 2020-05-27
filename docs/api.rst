@@ -1,5 +1,5 @@
 API server
-==============
+=======================================
 
 .. automodule:: mindsweeper.api
    :members:
@@ -7,7 +7,7 @@ API server
    :show-inheritance:
 
 CLI
---------
+---------------------------------------
 
 .. click:: mindsweeper.api:main
    :prog: python -m mindsweeper.api

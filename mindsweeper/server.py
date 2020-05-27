@@ -1,4 +1,4 @@
-'''Server'''
+'''The Server module offers methods for running the server, and an API for uploading messages to it.'''
 
 import bson
 import click
@@ -33,10 +33,9 @@ def run_server(host='127.0.0.1',
 
 def upload(msg, publish):
     '''
-    Receives a message in a format readable by the server,
+    Receive a message in a format readable by the server,
     and make it ready to be sent to the message queue:
-    Messages with types mentioned in any parser's `msg_types`,
-    will change their status to 'unparsed'.
+    Messages with types mentioned in any parser's `msg_types`, will change their status to 'unparsed'.
     Other messages will change their status to 'ready'.
     For messages with large amount of data (like images),
     their data should be saved to a reasonable path under the
@@ -65,7 +64,7 @@ def upload(msg, publish):
         msg['status'] = 'ready'
     publish(msg)
     return 'OK'
-    
+
 
 @click.group()
 def main():
@@ -86,7 +85,7 @@ def run_server_command(host, port, message_queue_url):
 
 @app.route('/upload', methods=['POST'])
 def upload_api():
-    '''Flask API - All upload requests will go through this url.'''
+    '''API for uploading messages to the server. Send a BSON decoded message to `/upload`.'''
     return upload(bson.decode(request.get_data()), publish_func)
 
 

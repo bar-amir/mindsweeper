@@ -1,21 +1,5 @@
-import bson
 import click
-import os
-import time
-from . import Reader
-from ..utils.config import PROJECT_ROOT
-
-
-def read_to_files(path, output=None,):
-    if not output:
-        output = PROJECT_ROOT / 'tests' / 'messages'
-    reader = Reader(path)
-    os.makedirs(output, exist_ok=True)
-    for msg in reader:
-        name = f"{msg['type']}-{str(int(time.time()))}.dat"
-        with open(output / name, 'wb') as f:
-            f.write(bson.encode(msg))
-        click.echo(f'Wrote message to {output / name}.')
+from . import read_to_files
 
 
 @click.group()

@@ -1,8 +1,8 @@
 Utilities
-==============
+=======================================
 
 Configuration file
-------------------
+---------------------------------------
 
 .. automodule:: mindsweeper.utils.config
    :members:
@@ -10,7 +10,7 @@ Configuration file
    :show-inheritance:
 
 Auxilary functions
-------------------
+---------------------------------------
 
 .. automodule:: mindsweeper.utils.aux
    :members:

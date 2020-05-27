@@ -1,5 +1,5 @@
-import click
 import bson
+import click
 import pika
 import time
 from ...utils import aux
@@ -90,7 +90,7 @@ class RabbitMQ:
         the message queue.'''
         def callback(ch, method, properties, body):
             click.echo('Received message')
-            saver.save(bson.decode(body))
+            saver.save('topic', bson.decode(body))  # first value is ignored
         click.echo('Waiting for messages. (Press CTRL+C to quit)')
         attempts = 0
         while True:

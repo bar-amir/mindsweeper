@@ -1,5 +1,5 @@
 CLI
-==============
+=======================================
 
 .. automodule:: mindsweeper.cli
    :members:
@@ -7,7 +7,7 @@ CLI
    :show-inheritance:
 
 CLI
---------
+---------------------------------------
 
 .. click:: mindsweeper.cli:main
    :prog: python -m mindsweeper.cli

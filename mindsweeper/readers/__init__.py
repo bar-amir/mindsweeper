@@ -1,4 +1,8 @@
+import bson
+import click
+import os
 import sys
+import time
 from importlib import import_module
 from pathlib import Path
 from ..utils.config import PROJECT_ROOT
@@ -24,6 +28,19 @@ class Reader:
                 yield from self.gen
             except StopIteration as e:
                 raise e
+
+
+def read_to_files(path, output=None,):
+    '''Write messages read from `path` to individual files, and store them in `output`. When `output` is not given, files would be saved under `tests/messages`.'''
+    if not output:
+        output = PROJECT_ROOT / 'tests' / 'messages'
+    reader = Reader(path)
+    os.makedirs(output, exist_ok=True)
+    for msg in reader:
+        name = f"{msg['type']}-{str(int(time.time()))}.dat"
+        with open(output / name, 'wb') as f:
+            f.write(bson.encode(msg))
+        click.echo(f'Wrote message to {output / name}.')
 
 
 def proto_reader(func):

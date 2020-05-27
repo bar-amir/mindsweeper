@@ -1,5 +1,5 @@
 Server
-==============
+=======================================
 
 .. automodule:: mindsweeper.server
    :members:
@@ -7,7 +7,7 @@ Server
    :show-inheritance:
 
 CLI
---------
+---------------------------------------
 
 .. click:: mindsweeper.server:main
    :prog: run-server

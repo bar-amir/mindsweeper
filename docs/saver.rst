@@ -1,5 +1,5 @@
 Saver
-==============
+=======================================
 
 .. automodule:: mindsweeper.saver
    :members:
@@ -7,7 +7,7 @@ Saver
    :show-inheritance:
 
 CLI
---------
+---------------------------------------
 
 .. click:: mindsweeper.saver:main
    :prog: python -m mindsweeper.saver

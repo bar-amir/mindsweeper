@@ -1,5 +1,3 @@
-'''Client'''
-
 import bson
 import click
 import requests

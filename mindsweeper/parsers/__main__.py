@@ -1,16 +1,7 @@
 
 import bson
-from . import *
-from ..drivers import MessageQueue
-
-
-def run_parser(parser_name, message_queue_url=None):
-    '''Connect to message queue and start the parser as a service.'''
-    parser_func, msg_types = find_parser(parser_name)
-    if not parser_func and not msg_types:
-        raise ModuleNotFoundError('Parser-function not found.')
-    mq = MessageQueue(message_queue_url)
-    mq.start_parser(parser_func, msg_types)
+import click
+from . import run_parser, parse
 
 
 @click.group()

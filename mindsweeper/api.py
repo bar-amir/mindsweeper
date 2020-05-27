@@ -1,9 +1,12 @@
+'''This module contains methods for running and API server and querying the database with it. Queries are implemented in the format of MongoDB queries, the default database of Mindsweeper, although other drivers can be implemented. The response of successful queries are in JSON format.
+'''
+
 import click
 import datetime
 import json
 from flask import Flask, send_file
 from flask_cors import CORS, cross_origin
-from .drivers import Database
+from .drivers.database import Database
 from .utils import aux
 
 
@@ -20,6 +23,7 @@ def main():
 @app.route('/users')
 @cross_origin()
 def get_users():
+    '''Return a list of all users at `/users`.'''
     collection = db.find('users', {}, {'_id': 1, 'username': 1})
     result = []
     for user in collection:
@@ -42,6 +46,7 @@ def get_users():
 @app.route('/users/<user_id>/sweeps')
 @cross_origin()
 def get_sweeps(user_id):
+    '''Return a list of all of `<user_id>`'s sweeps at `/users/<user_id>/sweeps`.'''
     collection = db.find('sweeps', {'userId': int(user_id)})
     result = []
     for sweep in collection:
@@ -62,6 +67,7 @@ def get_sweeps(user_id):
 @app.route('/users/<user_id>/sweeps/<sweep_id>')
 @cross_origin()
 def get_sweep(user_id, sweep_id):
+    '''Return the sweep `sweep_id  of the user `user_id` at `/users/<user_id>/sweeps/<sweep_id>`.'''
     sweep = db.find_one('sweeps', {'_id': sweep_id})
     result = {
         'sweepId': sweep['_id'],
@@ -79,10 +85,12 @@ def get_sweep(user_id, sweep_id):
 @app.route('/users/<user_id>/sweeps/<sweep_id>/snapshots')
 @cross_origin()
 def get_sweep_snapshots(user_id, sweep_id):
+    '''Return a list of the snapshots of `user_id`'s sweep, `sweep_id`, sorted from the earliest to the latest, at `/users/<user_id>/sweeps/<sweep_id>/snapshots`.'''
     sweep = db.find_one('sweeps', {'_id': sweep_id})
     collection = db.find('snapshots', {
         '$and': [{'datetime': {'$gte': sweep['sweepStart']}},
-                  {'datetime': {'$lte': sweep['sweepEnd']}}]})
+                 {'datetime': {'$lte': sweep['sweepEnd']}}]}
+                 ).sort('datetime')
     result = []
     for snapshot in collection:
         s = {
@@ -99,6 +107,7 @@ def get_sweep_snapshots(user_id, sweep_id):
 @app.route('/users/<user_id>')
 @cross_origin()
 def get_user(user_id):
+    '''Return the user `user_id` at `/users/<user_id>`.'''
     user = db.find_one('users', {'_id': int(user_id)}, {'snapshots': 0})
     gender = {
         0: 'Male',
@@ -118,10 +127,10 @@ def get_user(user_id):
 @app.route('/users/<user_id>/snapshots')
 @cross_origin()
 def get_user_snapshots(user_id):
+    '''Return a list of `user_id`'s snapshots at `/users/<user_id>/snapshots`.'''
     collection = db.find('snapshots',
-                        {'userId': int(user_id)},
-                        {'_id': 1, 'datetime': 1}
-                        ).sort('datetime')
+                         {'userId': int(user_id)},
+                         {'_id': 1, 'datetime': 1}).sort('datetime')
     result = []
     for snapshot in collection:
         s = {
@@ -138,6 +147,7 @@ def get_user_snapshots(user_id):
 @app.route('/users/<user_id>/snapshots/<snapshot_id>')
 @cross_origin()
 def get_user_snapshot(user_id, snapshot_id):
+    '''Return the snapshot `snapshot_id` of the user `user_id` at `/users/<user_id>/snapshots/<snapshot_id>`.'''
     snapshot = db.find_one('snapshots', {'_id': snapshot_id})
     result = {
         'snapshotId': snapshot['_id'],
@@ -152,6 +162,7 @@ def get_user_snapshot(user_id, snapshot_id):
 @app.route('/users/<user_id>/snapshots/<snapshot_id>/<result_name>')
 @cross_origin()
 def get_result(user_id, snapshot_id, result_name):
+    '''Return the result `result_name` of `user_id`'s snapshot, `snapshot_id`, at `/users/<user_id>/snapshots/<snapshot_id>/<result_name>`.'''
     snapshot = db.find_one('snapshots', {'_id': snapshot_id})
     name = aux.snake_to_lower_camel(result_name, '-')
     if name in snapshot['results']:
@@ -165,6 +176,7 @@ def get_result(user_id, snapshot_id, result_name):
 @app.route('/users/<user_id>/snapshots/<snapshot_id>/<result_name>/data')
 @cross_origin()
 def get_result_data(user_id, snapshot_id, result_name):
+    '''Return images (either color images or depth images) that are saved to disk, at `/users/<user_id>/snapshots/<snapshot_id>/<result_name>/data`.'''
     snapshot = db.find_one('snapshots', {'_id': snapshot_id})
     name = aux.snake_to_lower_camel(result_name, '-')
     if name in snapshot['results']:
@@ -176,7 +188,7 @@ def get_result_data(user_id, snapshot_id, result_name):
 def run_api_server(database_url,
                    host='127.0.0.1',
                    port=5000):
-    '''listen on host:port and serve data from database_url'''
+    '''Listen on `host`:`port` and serve data from `database_url`.'''
     global db
     db = Database(database_url)
     app.run(host=host, port=port)
@@ -185,8 +197,8 @@ def run_api_server(database_url,
 @main.command()
 @click.option('-h', '--host', default='127.0.0.1')
 @click.option('-p', '--port', default=5000)
-@click.option('-d', '--database')
-def run_server(host='127.0.0.1', port=5000, database=None):
+@click.option('-d', '--database', default=None)
+def run_server(host, port, database):
     run_api_server(database, host, port)
 
 

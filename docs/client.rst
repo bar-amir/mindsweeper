@@ -1,5 +1,5 @@
 Client
-==============
+=======================================
 
 .. automodule:: mindsweeper.client
    :members:
@@ -7,7 +7,7 @@ Client
    :show-inheritance:
 
 CLI
---------
+---------------------------------------
 
 .. click:: mindsweeper.client:main
    :prog: python -m mindsweeper.client
