@@ -33,7 +33,7 @@ $ git clone https://github.com/bar-amir/mindsweeper.git
 $ cd mindsweeper
 ```
 
-Grant execution permissions to all scripts:
+Grant execution permission to all scripts under the `scripts` folder:
 ```bash
 $ chmod a=rwx -R scripts 
 ```
