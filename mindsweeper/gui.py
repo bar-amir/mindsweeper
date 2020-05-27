@@ -3,11 +3,6 @@ import os
 from .utils.config import PROJECT_ROOT
 
 
-@click.group()
-def main():
-    pass
-
-
 def create_env(host='127.0.0.1',
                port=8080,
                api_host='127.0.0.1',
@@ -25,6 +20,11 @@ def run_server(host='127.0.0.1',
                api_port=5000):
     create_env(host, port, api_host, api_port)
     os.system('cd mindsweeper/gui && npm start')
+
+
+@click.group()
+def main():
+    pass
 
 
 @main.command(name='create-env')
