@@ -25,7 +25,7 @@ Grant execution permissions to all scripts:
 chmod a=rx -R scripts 
 ```
 
-Run install.sh
+Run install.sh:
 ```
 https://github.com/bar-amir/mindsweeper/blob/master/README.md
 scripts/install.sh
@@ -37,19 +37,19 @@ The script will:
 
 ## Running locally
 
-### Running with Docker
+### With Docker
 Simply use Docker Compose:
 ```
 docker-compose up
 ```
 
-### Running locally
+### Locally
 
 Activate virtual enviroment:
 ```
 source .env/bin/activate
 ```
-Now you can start any service using Python API or the CLI (Read more here).
+Now you can start any of the services using Python API or the CLI and upload a raw file to the server.
 
 ## Sample File
 Download sample.mind.gz from here. [reupload to GCP]
