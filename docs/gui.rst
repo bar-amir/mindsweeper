@@ -1,19 +1,20 @@
 .. Mindsweeper documentation master file, created by
-   sphinx-quickstart on Wed May 27 13:16:49 2020.
+   sphinx-quickstart on Wed May 27 14:28:48 2020.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Mindsweeper's documentation!
+GUI
 =======================================
 
-.. automodule:: mindsweeper.client
-    :members: 
+.. automodule:: mindsweeper
+   :members:
+
+.. automodule:: mindsweeper.gui
+   :members:
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
-
 
 Indices and tables
 ==================

@@ -23,3 +23,4 @@ scripts/_stop.sh
 .coverage
 data/
 tests/messages/
+docs/_build/

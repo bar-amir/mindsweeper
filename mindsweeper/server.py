@@ -1,3 +1,5 @@
+'''Server'''
+
 import bson
 import click
 import os
