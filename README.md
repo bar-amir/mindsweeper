@@ -48,7 +48,7 @@ This script will:
 * Update npm and install dependencies
 * Compile .proto files
 
-Activate virtual enviroment:
+Activate the virtual enviroment:
 ```bash
 $ source .env/bin/activate
 ```
