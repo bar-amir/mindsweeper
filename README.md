@@ -13,11 +13,11 @@
 ## About
 ## Prerequisites
 ```
-Docker
-docker-compose
-Node
-npm
-Python
+Docker v19.03.6
+docker-compose v1.25.5
+Node v12.16.3
+npm v16.14.5
+Python v3.8
 ```
 
 ## Installation
@@ -31,7 +31,7 @@ $ cd mindsweeper
 
 Grant execution permissions to all scripts:
 ```bash
-$ chmod a=rx -R scripts 
+$ chmod a=rwx -R scripts 
 ```
 
 Run install.sh:
