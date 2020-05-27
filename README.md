@@ -31,8 +31,14 @@ scripts/install.sh
 ```
 This script will:
 * Create a virtual enviroment
-* Install dependencies, both for Python and Node
+* Update pip and install dependencies
+* Update npm and install dependencies
 * Compile .proto files
+
+Activate virtual enviroment:
+```bash
+source .env/bin/activate
+```
 
 ## Running locally
 
@@ -42,14 +48,12 @@ Run run-pipeline.sh
 scripts/run-pipeline.sh
 ```
 This script will:
-* 
+* Configure the GUI for running in a container
+* Build and run all the services with Docker Compose
 
 ### Locally
 
-Activate virtual enviroment:
-```bash
-source .env/bin/activate
-```
+
 Now you can start any of the services using Python API or the CLI and upload a raw file to the server.
 
 ## Sample File
