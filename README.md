@@ -38,7 +38,7 @@ Grant execution permission to all scripts under the `scripts` folder:
 $ chmod a=rwx -R scripts 
 ```
 
-Run install.sh:
+Run `install.sh`:
 ```bash
 $ scripts/install.sh
 ```
@@ -54,7 +54,7 @@ $ source .env/bin/activate
 ```
 
 ## Running with Docker
-Run run-pipeline.sh
+Run `run-pipeline.sh`
 ```bash
 $ scripts/run-pipeline.sh
 ```
