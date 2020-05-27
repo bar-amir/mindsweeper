@@ -12,7 +12,7 @@
 
 ## About
 Final project submission of the course "Advanced Systems Design". (Tel Aviv University, 2020)
-Full documentation is available (here)[https://mindsweeper.readthedocs.io/].
+Full documentation is available [here](https://mindsweeper.readthedocs.io/).
 
 ## Prerequisites
 ```
