@@ -38,19 +38,6 @@ services:
       - ms_db
     command: python -m mindsweeper.saver run-saver 'mongodb://ms_db:27017/' 'rabbitmq://ms_mq:5672/'
 
-  ms_api:
-    image: mindsweeper
-    volumes:
-      - media:/media
-    expose:
-      - "5000"
-    ports:
-      - "5000:5000"
-    depends_on:
-      - ms_mq
-      - ms_db
-    command: python -m mindsweeper.api run-server -h '0.0.0.0' -d 'mongodb://ms_db:27017/'
-
   ms_parser_color_image:
       image: mindsweeper
       volumes:
@@ -82,6 +69,31 @@ services:
       - ms_server
       - ms_mq
     command: python -m mindsweeper.parsers run-parser 'pose' 'rabbitmq://ms_mq:5672/'
+
+  ms_api:
+    image: mindsweeper
+    volumes:
+      - media:/media
+    expose:
+      - "5000"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - ms_mq
+      - ms_db
+    command: python -m mindsweeper.api run-server -h '0.0.0.0' -d 'mongodb://ms_db:27017/'
+
+  ms_gui:
+    build:
+      context: .
+      dockerfile: ./mindsweeper/gui/Dockerfile
+    image: msgui
+    volumes:
+      - .:/code
+    ports:
+      - '8080:8080'
+    depends_on:
+      - ms_api
 
 volumes:
   media:

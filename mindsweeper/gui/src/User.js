@@ -1,48 +1,82 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Head from './Head';
+import Header from './Header';
+import Loading from './Loading';
 import Sweep from './Sweep';
 import {
-  BrowserRouter as Router,
+  // BrowserRouter as Router,
   Switch,
   Route,
   Link,
   useRouteMatch,
-  useParams
+  useParams,
+  Redirect
 } from "react-router-dom";
+import { Table, Breadcrumb } from 'react-bootstrap';
 
-function User() {
+function User(props) {
   let match = useRouteMatch();
   let { userId } = useParams();
+  const [user, setUser] = useState([]);
   const [sweeps, setSweeps] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   
-  useEffect(async () => {
-    const result = await axios(
-      `http://localhost:5000/users/${userId}/sweeps`,
-    );
- 
-    setSweeps(result.data);
+  useEffect(() => {
+    async function fetchData() {
+      var resNotFound = false
+      const result_user = await axios(
+        `http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/users/${userId}`,
+      )
+      const result_sweeps = await axios(
+        `http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/users/${userId}/sweeps`,
+      );
+      setUser(result_user.data);
+      setSweeps(result_sweeps.data);
+      setIsLoading(false)
+    }
+    fetchData();
   }, []);
-
-  return (
-    <div>
-      <Switch>
-        <Route path={`${match.path}/sweeps/:sweepId`}>
-          <Sweep />
-        </Route>
-        <Route path={match.path}>
-          <h3>Requested user ID: {userId}</h3>
-          <h3>Please select a Sweep.</h3>
-          <ul>
-            {sweeps.map(sweep => (
-              <li key={sweep.sweepId}>
-                {sweep.sweepId}
-              </li>
-            ))}
-          </ul>
-        </Route>
-      </Switch>
-    </div>
-  );
+  if (isLoading) {
+    return (<div><Head /><Loading /></div>);
+  }
+  else {
+    return (
+      <div>
+        <Switch>
+          <Route path={`${match.path}/sweeps/:sweepId`}>
+            <Sweep user={user} />
+          </Route>
+          <Route path={match.path}>
+            <Head />
+            <Header user={user} />
+            <Breadcrumb className="m-3">
+              <Breadcrumb.Item><Link to="/users">Users</Link></Breadcrumb.Item>
+              <Breadcrumb.Item active>{user.username}</Breadcrumb.Item>
+            </Breadcrumb>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Date taken</th>
+                  <th>Snapshots Count</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sweeps.map((sweep, index) => (
+                  <tr key={sweep.sweepId}>
+                    <td>{index + 1}</td>
+                    <td><Link to={`${user.userId}/sweeps/${sweep.sweepId}`}>{sweep.start}</Link></td>
+                    <td>{sweep.numOfSnapshots}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Route>
+        </Switch>
+      </div>
+    );
+  }
 }
 
 export default User;

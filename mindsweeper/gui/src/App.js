@@ -3,7 +3,7 @@ import './App.scss';
 import Home from './Home';
 import Users from './Users';
 import {
-  BrowserRouter as Router,
+  // BrowserRouter as Router,
   Switch,
   Route
 } from "react-router-dom";
@@ -15,7 +15,7 @@ function App() {
         <Route path="/users">
           <Users />
         </Route>
-        <Route path="/">
+        <Route exact path="/">
           <Home />
         </Route>
       </Switch>

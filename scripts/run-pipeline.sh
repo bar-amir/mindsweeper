@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# install dependencies - including nodejs? not needed because of docker
+# compile proto files
+# write correct .env file to gui
+# docker-compose everything
+
+
+
 # scripts/compile-protos.sh
 # docker-compose up
 
@@ -39,6 +46,7 @@ docker run -d \
 
 # source .env/bin/activate
 # python -m mindsweeper.parsers run-parser 'pose' 'rabbitmq://127.0.0.1:5672/'
+# python -m mindsweeper.api run-server 'mongodb://localhost:27017/'
 # python -m mindsweeper.parsers run-parser 'depth_image' 'rabbitmq://127.0.0.1:5672/'
 # python -m mindsweeper.parsers run-parser 'color_image' 'rabbitmq://127.0.0.1:5672/'
 # python -m mindsweeper.parsers run-parser 'feelings' 'rabbitmq://127.0.0.1:5672/'

@@ -120,7 +120,8 @@ def get_user(user_id):
 def get_user_snapshots(user_id):
     collection = db.find('snapshots',
                         {'userId': int(user_id)},
-                        {'_id': 1, 'datetime': 1}).sort('datetime')
+                        {'_id': 1, 'datetime': 1}
+                        ).sort('datetime')
     result = []
     for snapshot in collection:
         s = {
@@ -128,6 +129,7 @@ def get_user_snapshots(user_id):
             'datetime': datetime.datetime.fromtimestamp(
                 int(snapshot['datetime'])/1000).strftime(
                     '%Y-%m-%d %H:%M:%S.%f'),
+            # 'results': snapshot['results']
         }
         result.append(s)
     return json.dumps(result)
@@ -158,8 +160,6 @@ def get_result(user_id, snapshot_id, result_name):
             result['data'] = f"/users/{user_id}/snapshots/{snapshot_id}/{result_name}/data"
             del result['path']
         return json.dumps(result)
-    else:
-        return 'No available data'
 
 
 @app.route('/users/<user_id>/snapshots/<snapshot_id>/<result_name>/data')
@@ -171,8 +171,6 @@ def get_result_data(user_id, snapshot_id, result_name):
         if name in ['colorImage', 'depthImage']:
             return send_file(
                 snapshot['results'][name]['path'], mimetype='image/gif')
-    else:
-        return 'No available data'
 
 
 def run_api_server(database_url,
