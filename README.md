@@ -11,6 +11,14 @@
 </p>
 
 ## About
+## Prerequisites
+```
+Docker
+docker-compose
+Node
+npm
+Python
+```
 
 ## Installation
 
