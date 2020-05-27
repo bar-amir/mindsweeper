@@ -46,7 +46,7 @@ This script will:
 * Create a virtual enviroment
 * Update pip and install dependencies
 * Update npm and install dependencies
-* Compile .proto files
+* Compile `.proto` files to modules
 
 Activate the virtual enviroment:
 ```bash
