@@ -6,7 +6,7 @@ Readers
    :undoc-members:
    :show-inheritance:
 
-Adding readers (supporting more files)
+Adding readers (supporting other file formats)
 ---------------------------------------
 Reader receive a reader-function, which supports the reading of a single file format. To support other formats, new reader-functions should be implemented:
 

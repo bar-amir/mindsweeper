@@ -9,7 +9,7 @@ Configuration file
    :undoc-members:
    :show-inheritance:
 
-Auxilary functions
+Auxiliary functions
 ---------------------------------------
 
 .. automodule:: mindsweeper.utils.aux
