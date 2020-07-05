@@ -70,5 +70,3 @@ Upload a `.mind` or a `.mind.gz` file containing snapshots to Mindsweeper using 
 $ python -m mindsweeper.client upload-sample /path/to/file
 ```
 Mindsweeper would then parse the files and upload the snapshots to its database. You could then view them at http://localhost:8080.
-
-*Social media illustration by Robert Beatty
