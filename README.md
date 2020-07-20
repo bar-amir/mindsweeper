@@ -13,9 +13,14 @@
 ## About
 Final project submission for the course "Advanced Systems Design". (Tel Aviv University, 2020)
 
-The final project includes a client, which streams cognition snapshots to a server using Protocol Buffers. The server then publishes them to a message queue (RabbitMQ), where multiple parsers read the snapshot, parse various parts of it, and publish the parsed results, which are then saved to a database (MongoDB). The results are then exposed via a RESTful API, which is consumed by a CLI; there's also a GUI made with React, which visualizes the results in various ways. The project is organized, tested, documented, and easily deployable with Docker.
+The project experiments with several technologies and concepts:
+1. Client-server: Uploading large files, handling multiple connections parallely (Flask, Protocol Buffers)
+2. Microservices architecture: Parsing messages containing different types of data and saving them to a database (RabbitMQ, MongoDB) 
+3. RESTful API: Exposing the saved data, and consuming it by a CLI and a GUI (Click, React)
+4. Built a framework for adding support for new file formats and parsers.
+5. Easy deployment, CI/CD, testing and documentation (Docker, TravisCI, Codecov, pytest, Sphinx, Read the Docs)
 
-Full documentation is available [here](https://mindsweeper.readthedocs.io/).
+Documentation is available [here](https://mindsweeper.readthedocs.io/).
 
 ## Prerequisites
 ```
