@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Server &#8212; Mindsweeper  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Utilities" href="utils.html" />
+    <link rel="prev" title="Saver" href="saver.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="utils.html" title="Utilities"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="saver.html" title="Saver"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Mindsweeper  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-mindsweeper.server">
+<span id="server"></span><h1>Server<a class="headerlink" href="#module-mindsweeper.server" title="Permalink to this headline">¶</a></h1>
+<p>The Server module offers methods for running the server, and an API for uploading messages to it.</p>
+<dl class="py function">
+<dt id="mindsweeper.server.run_server">
+<code class="sig-prename descclassname">mindsweeper.server.</code><code class="sig-name descname">run_server</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">host</span><span class="o">=</span><span class="default_value">'127.0.0.1'</span></em>, <em class="sig-param"><span class="n">port</span><span class="o">=</span><span class="default_value">8000</span></em>, <em class="sig-param"><span class="n">publish</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.server.run_server" title="Permalink to this definition">¶</a></dt>
+<dd><p>Listen on <cite>host</cite>:<cite>port</cite> and pass received messages to <cite>publish</cite>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mindsweeper.server.upload">
+<code class="sig-prename descclassname">mindsweeper.server.</code><code class="sig-name descname">upload</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">msg</span></em>, <em class="sig-param"><span class="n">publish</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.server.upload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receive a message in a format readable by the server,
+and make it ready to be sent to the message queue:
+Messages with types mentioned in any parser’s <cite>msg_types</cite>, will change their status to ‘unparsed’.
+Other messages will change their status to ‘ready’.
+For messages with large amount of data (like images),
+their data should be saved to a reasonable path under the
+‘media’ folder.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mindsweeper.server.upload_api">
+<code class="sig-prename descclassname">mindsweeper.server.</code><code class="sig-name descname">upload_api</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.server.upload_api" title="Permalink to this definition">¶</a></dt>
+<dd><p>API for uploading messages to the server. Send a BSON decoded message to <cite>/upload</cite>.</p>
+</dd></dl>
+
+<div class="section" id="cli">
+<h2>CLI<a class="headerlink" href="#cli" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="run-server">
+<h3>run-server<a class="headerlink" href="#run-server" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>run-server <span class="o">[</span>OPTIONS<span class="o">]</span> COMMAND <span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<div class="section" id="run-server-run-server">
+<h4>run-server<a class="headerlink" href="#run-server-run-server" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>run-server run-server <span class="o">[</span>OPTIONS<span class="o">]</span> MESSAGE_QUEUE_URL
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt id="cmdoption-run-server-run-server-h">
+<span id="cmdoption-run-server-run-server-host"></span><code class="sig-name descname">-h</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--host</code><code class="sig-prename descclassname"> &lt;host&gt;</code><a class="headerlink" href="#cmdoption-run-server-run-server-h" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-run-server-run-server-p">
+<span id="cmdoption-run-server-run-server-port"></span><code class="sig-name descname">-p</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--port</code><code class="sig-prename descclassname"> &lt;port&gt;</code><a class="headerlink" href="#cmdoption-run-server-run-server-p" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt id="cmdoption-run-server-run-server-arg-MESSAGE_QUEUE_URL">
+<code class="sig-name descname">MESSAGE_QUEUE_URL</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-run-server-run-server-arg-MESSAGE_QUEUE_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Server</a><ul>
+<li><a class="reference internal" href="#cli">CLI</a><ul>
+<li><a class="reference internal" href="#run-server">run-server</a><ul>
+<li><a class="reference internal" href="#run-server-run-server">run-server</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="saver.html"
+                        title="previous chapter">Saver</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="utils.html"
+                        title="next chapter">Utilities</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/server.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="utils.html" title="Utilities"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="saver.html" title="Saver"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Mindsweeper  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Bar Amir.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.4.
+    </div>
+  </body>
+</html>

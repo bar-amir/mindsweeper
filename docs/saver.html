@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Saver &#8212; Mindsweeper  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Server" href="server.html" />
+    <link rel="prev" title="Readers" href="readers.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="server.html" title="Server"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="readers.html" title="Readers"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Mindsweeper  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-mindsweeper.saver">
+<span id="saver"></span><h1>Saver<a class="headerlink" href="#module-mindsweeper.saver" title="Permalink to this headline">¶</a></h1>
+<p>Savers consume messages with ‘ready’ status from a message queue and save them to a database.</p>
+<dl class="py class">
+<dt id="mindsweeper.saver.Saver">
+<em class="property">class </em><code class="sig-prename descclassname">mindsweeper.saver.</code><code class="sig-name descname">Saver</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">database_url</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.saver.Saver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="mindsweeper.saver.Saver.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">topic</span></em>, <em class="sig-param"><span class="n">msg</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.saver.Saver.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a message to the Saver’s database. The specification of the project requires receiving the message queue’s relevant topic name, however, in this implementation, the topic is a combination of the message type and its status, so this function ignores <cite>topic</cite>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="cli">
+<h2>CLI<a class="headerlink" href="#cli" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="python-m-mindsweeper-saver">
+<h3>python -m mindsweeper.saver<a class="headerlink" href="#python-m-mindsweeper-saver" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python -m mindsweeper.saver <span class="o">[</span>OPTIONS<span class="o">]</span> COMMAND <span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<div class="section" id="python-m-mindsweeper-saver-run-saver">
+<h4>run-saver<a class="headerlink" href="#python-m-mindsweeper-saver-run-saver" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python -m mindsweeper.saver run-saver <span class="o">[</span>OPTIONS<span class="o">]</span> DATABASE_URL MESSAGE_QUEUE_URL
+</pre></div>
+</div>
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt id="cmdoption-python-m-mindsweeper.saver-run-saver-arg-DATABASE_URL">
+<code class="sig-name descname">DATABASE_URL</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-python-m-mindsweeper.saver-run-saver-arg-DATABASE_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-python-m-mindsweeper.saver-run-saver-arg-MESSAGE_QUEUE_URL">
+<code class="sig-name descname">MESSAGE_QUEUE_URL</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-python-m-mindsweeper.saver-run-saver-arg-MESSAGE_QUEUE_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</div>
+<div class="section" id="python-m-mindsweeper-saver-save">
+<h4>save<a class="headerlink" href="#python-m-mindsweeper-saver-save" title="Permalink to this headline">¶</a></h4>
+<p>Save the message <cite>data</cite> to <cite>database</cite>. If the flag <cite>–path</cite> is set, <cite>data</cite> would be regarded as a path to a file containing the message. The message should be encoded with BSON, same as if it was consumed from the message queue. This implementation ignores the value of <cite>topic_name</cite>.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python -m mindsweeper.saver save <span class="o">[</span>OPTIONS<span class="o">]</span> TOPIC_NAME DATA
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt id="cmdoption-python-m-mindsweeper.saver-save-d">
+<span id="cmdoption-python-m-mindsweeper.saver-save-database"></span><code class="sig-name descname">-d</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--database</code><code class="sig-prename descclassname"> &lt;database&gt;</code><a class="headerlink" href="#cmdoption-python-m-mindsweeper.saver-save-d" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-python-m-mindsweeper.saver-save-p">
+<span id="cmdoption-python-m-mindsweeper.saver-save-path"></span><code class="sig-name descname">-p</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--path</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-python-m-mindsweeper.saver-save-p" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt id="cmdoption-python-m-mindsweeper.saver-save-arg-TOPIC_NAME">
+<code class="sig-name descname">TOPIC_NAME</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-python-m-mindsweeper.saver-save-arg-TOPIC_NAME" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-python-m-mindsweeper.saver-save-arg-DATA">
+<code class="sig-name descname">DATA</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-python-m-mindsweeper.saver-save-arg-DATA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Saver</a><ul>
+<li><a class="reference internal" href="#cli">CLI</a><ul>
+<li><a class="reference internal" href="#python-m-mindsweeper-saver">python -m mindsweeper.saver</a><ul>
+<li><a class="reference internal" href="#python-m-mindsweeper-saver-run-saver">run-saver</a></li>
+<li><a class="reference internal" href="#python-m-mindsweeper-saver-save">save</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="readers.html"
+                        title="previous chapter">Readers</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="server.html"
+                        title="next chapter">Server</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/saver.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="server.html" title="Server"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="readers.html" title="Readers"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Mindsweeper  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Bar Amir.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.4.
+    </div>
+  </body>
+</html>

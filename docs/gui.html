@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>GUI &#8212; Mindsweeper  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Client" href="client.html" />
+    <link rel="prev" title="CLI" href="cli.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="client.html" title="Client"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="cli.html" title="CLI"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Mindsweeper  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-mindsweeper.gui">
+<span id="gui"></span><h1>GUI<a class="headerlink" href="#module-mindsweeper.gui" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="mindsweeper.gui.create_env">
+<code class="sig-prename descclassname">mindsweeper.gui.</code><code class="sig-name descname">create_env</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">host</span><span class="o">=</span><span class="default_value">'127.0.0.1'</span></em>, <em class="sig-param"><span class="n">port</span><span class="o">=</span><span class="default_value">8080</span></em>, <em class="sig-param"><span class="n">api_host</span><span class="o">=</span><span class="default_value">'127.0.0.1'</span></em>, <em class="sig-param"><span class="n">api_port</span><span class="o">=</span><span class="default_value">5000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.gui.create_env" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write an <cite>.env</cite> file to the root folder of the GUI interface so it would run and consume from the right hosts and ports.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mindsweeper.gui.run_server">
+<code class="sig-prename descclassname">mindsweeper.gui.</code><code class="sig-name descname">run_server</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">host</span><span class="o">=</span><span class="default_value">'127.0.0.1'</span></em>, <em class="sig-param"><span class="n">port</span><span class="o">=</span><span class="default_value">8080</span></em>, <em class="sig-param"><span class="n">api_host</span><span class="o">=</span><span class="default_value">'127.0.0.1'</span></em>, <em class="sig-param"><span class="n">api_port</span><span class="o">=</span><span class="default_value">5000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.gui.run_server" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a web interface on <cite>host</cite>:<cite>port</cite> that consumes the API at <cite>api_host</cite>:<cite>api_port</cite>.</p>
+</dd></dl>
+
+<div class="section" id="cli">
+<h2>CLI<a class="headerlink" href="#cli" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="python-m-mindsweeper-gui">
+<h3>python -m mindsweeper.gui<a class="headerlink" href="#python-m-mindsweeper-gui" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python -m mindsweeper.gui <span class="o">[</span>OPTIONS<span class="o">]</span> COMMAND <span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<div class="section" id="python-m-mindsweeper-gui-create-env">
+<h4>create-env<a class="headerlink" href="#python-m-mindsweeper-gui-create-env" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python -m mindsweeper.gui create-env <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt id="cmdoption-python-m-mindsweeper.gui-create-env-h">
+<span id="cmdoption-python-m-mindsweeper.gui-create-env-host"></span><code class="sig-name descname">-h</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--host</code><code class="sig-prename descclassname"> &lt;host&gt;</code><a class="headerlink" href="#cmdoption-python-m-mindsweeper.gui-create-env-h" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-python-m-mindsweeper.gui-create-env-p">
+<span id="cmdoption-python-m-mindsweeper.gui-create-env-port"></span><code class="sig-name descname">-p</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--port</code><code class="sig-prename descclassname"> &lt;port&gt;</code><a class="headerlink" href="#cmdoption-python-m-mindsweeper.gui-create-env-p" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-python-m-mindsweeper.gui-create-env-H">
+<span id="cmdoption-python-m-mindsweeper.gui-create-env-api-host"></span><code class="sig-name descname">-H</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--api-host</code><code class="sig-prename descclassname"> &lt;api_host&gt;</code><a class="headerlink" href="#cmdoption-python-m-mindsweeper.gui-create-env-H" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-python-m-mindsweeper.gui-create-env-P">
+<span id="cmdoption-python-m-mindsweeper.gui-create-env-api-port"></span><code class="sig-name descname">-P</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--api-port</code><code class="sig-prename descclassname"> &lt;api_port&gt;</code><a class="headerlink" href="#cmdoption-python-m-mindsweeper.gui-create-env-P" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="python-m-mindsweeper-gui-run-server">
+<h4>run-server<a class="headerlink" href="#python-m-mindsweeper-gui-run-server" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python -m mindsweeper.gui run-server <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt id="cmdoption-python-m-mindsweeper.gui-run-server-h">
+<span id="cmdoption-python-m-mindsweeper.gui-run-server-host"></span><code class="sig-name descname">-h</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--host</code><code class="sig-prename descclassname"> &lt;host&gt;</code><a class="headerlink" href="#cmdoption-python-m-mindsweeper.gui-run-server-h" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-python-m-mindsweeper.gui-run-server-p">
+<span id="cmdoption-python-m-mindsweeper.gui-run-server-port"></span><code class="sig-name descname">-p</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--port</code><code class="sig-prename descclassname"> &lt;port&gt;</code><a class="headerlink" href="#cmdoption-python-m-mindsweeper.gui-run-server-p" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-python-m-mindsweeper.gui-run-server-H">
+<span id="cmdoption-python-m-mindsweeper.gui-run-server-api-host"></span><code class="sig-name descname">-H</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--api-host</code><code class="sig-prename descclassname"> &lt;api_host&gt;</code><a class="headerlink" href="#cmdoption-python-m-mindsweeper.gui-run-server-H" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-python-m-mindsweeper.gui-run-server-P">
+<span id="cmdoption-python-m-mindsweeper.gui-run-server-api-port"></span><code class="sig-name descname">-P</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--api-port</code><code class="sig-prename descclassname"> &lt;api_port&gt;</code><a class="headerlink" href="#cmdoption-python-m-mindsweeper.gui-run-server-P" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">GUI</a><ul>
+<li><a class="reference internal" href="#cli">CLI</a><ul>
+<li><a class="reference internal" href="#python-m-mindsweeper-gui">python -m mindsweeper.gui</a><ul>
+<li><a class="reference internal" href="#python-m-mindsweeper-gui-create-env">create-env</a></li>
+<li><a class="reference internal" href="#python-m-mindsweeper-gui-run-server">run-server</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cli.html"
+                        title="previous chapter">CLI</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="client.html"
+                        title="next chapter">Client</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/gui.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="client.html" title="Client"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="cli.html" title="CLI"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Mindsweeper  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Bar Amir.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.4.
+    </div>
+  </body>
+</html>

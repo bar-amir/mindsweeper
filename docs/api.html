@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>API server &#8212; Mindsweeper  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="CLI" href="cli.html" />
+    <link rel="prev" title="Welcome" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="cli.html" title="CLI"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Mindsweeper  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-mindsweeper.api">
+<span id="api-server"></span><h1>API server<a class="headerlink" href="#module-mindsweeper.api" title="Permalink to this headline">¶</a></h1>
+<p>This module contains methods for running and API server and querying the database with it. Queries are implemented in the format of MongoDB queries, the default database of Mindsweeper, although other drivers can be implemented. The response of successful queries are in JSON format.</p>
+<dl class="py function">
+<dt id="mindsweeper.api.get_result">
+<code class="sig-prename descclassname">mindsweeper.api.</code><code class="sig-name descname">get_result</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em>, <em class="sig-param"><span class="n">snapshot_id</span></em>, <em class="sig-param"><span class="n">result_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.api.get_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the result <cite>result_name</cite> of <cite>user_id</cite>’s snapshot, <cite>snapshot_id</cite>, at <cite>/users/&lt;user_id&gt;/snapshots/&lt;snapshot_id&gt;/&lt;result_name&gt;</cite>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mindsweeper.api.get_result_data">
+<code class="sig-prename descclassname">mindsweeper.api.</code><code class="sig-name descname">get_result_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em>, <em class="sig-param"><span class="n">snapshot_id</span></em>, <em class="sig-param"><span class="n">result_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.api.get_result_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return images (either color images or depth images) that are saved to disk, at <cite>/users/&lt;user_id&gt;/snapshots/&lt;snapshot_id&gt;/&lt;result_name&gt;/data</cite>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mindsweeper.api.get_sweep">
+<code class="sig-prename descclassname">mindsweeper.api.</code><code class="sig-name descname">get_sweep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em>, <em class="sig-param"><span class="n">sweep_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.api.get_sweep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the sweep <cite>sweep_id  of the user `user_id</cite> at <cite>/users/&lt;user_id&gt;/sweeps/&lt;sweep_id&gt;</cite>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mindsweeper.api.get_sweep_snapshots">
+<code class="sig-prename descclassname">mindsweeper.api.</code><code class="sig-name descname">get_sweep_snapshots</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em>, <em class="sig-param"><span class="n">sweep_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.api.get_sweep_snapshots" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of the snapshots of <cite>user_id</cite>’s sweep, <cite>sweep_id</cite>, sorted from the earliest to the latest, at <cite>/users/&lt;user_id&gt;/sweeps/&lt;sweep_id&gt;/snapshots</cite>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mindsweeper.api.get_sweeps">
+<code class="sig-prename descclassname">mindsweeper.api.</code><code class="sig-name descname">get_sweeps</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.api.get_sweeps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of all of <cite>&lt;user_id&gt;</cite>’s sweeps at <cite>/users/&lt;user_id&gt;/sweeps</cite>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mindsweeper.api.get_user">
+<code class="sig-prename descclassname">mindsweeper.api.</code><code class="sig-name descname">get_user</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.api.get_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the user <cite>user_id</cite> at <cite>/users/&lt;user_id&gt;</cite>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mindsweeper.api.get_user_snapshot">
+<code class="sig-prename descclassname">mindsweeper.api.</code><code class="sig-name descname">get_user_snapshot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em>, <em class="sig-param"><span class="n">snapshot_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.api.get_user_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the snapshot <cite>snapshot_id</cite> of the user <cite>user_id</cite> at <cite>/users/&lt;user_id&gt;/snapshots/&lt;snapshot_id&gt;</cite>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mindsweeper.api.get_user_snapshots">
+<code class="sig-prename descclassname">mindsweeper.api.</code><code class="sig-name descname">get_user_snapshots</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.api.get_user_snapshots" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of <cite>user_id</cite>’s snapshots at <cite>/users/&lt;user_id&gt;/snapshots</cite>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mindsweeper.api.get_users">
+<code class="sig-prename descclassname">mindsweeper.api.</code><code class="sig-name descname">get_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.api.get_users" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of all users at <cite>/users</cite>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mindsweeper.api.run_api_server">
+<code class="sig-prename descclassname">mindsweeper.api.</code><code class="sig-name descname">run_api_server</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">database_url</span></em>, <em class="sig-param"><span class="n">host</span><span class="o">=</span><span class="default_value">'127.0.0.1'</span></em>, <em class="sig-param"><span class="n">port</span><span class="o">=</span><span class="default_value">5000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.api.run_api_server" title="Permalink to this definition">¶</a></dt>
+<dd><p>Listen on <cite>host</cite>:<cite>port</cite> and serve data from <cite>database_url</cite>.</p>
+</dd></dl>
+
+<div class="section" id="cli">
+<h2>CLI<a class="headerlink" href="#cli" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="python-m-mindsweeper-api">
+<h3>python -m mindsweeper.api<a class="headerlink" href="#python-m-mindsweeper-api" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python -m mindsweeper.api <span class="o">[</span>OPTIONS<span class="o">]</span> COMMAND <span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<div class="section" id="python-m-mindsweeper-api-run-server">
+<h4>run-server<a class="headerlink" href="#python-m-mindsweeper-api-run-server" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python -m mindsweeper.api run-server <span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt id="cmdoption-python-m-mindsweeper.api-run-server-h">
+<span id="cmdoption-python-m-mindsweeper.api-run-server-host"></span><code class="sig-name descname">-h</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--host</code><code class="sig-prename descclassname"> &lt;host&gt;</code><a class="headerlink" href="#cmdoption-python-m-mindsweeper.api-run-server-h" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-python-m-mindsweeper.api-run-server-p">
+<span id="cmdoption-python-m-mindsweeper.api-run-server-port"></span><code class="sig-name descname">-p</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--port</code><code class="sig-prename descclassname"> &lt;port&gt;</code><a class="headerlink" href="#cmdoption-python-m-mindsweeper.api-run-server-p" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-python-m-mindsweeper.api-run-server-d">
+<span id="cmdoption-python-m-mindsweeper.api-run-server-database"></span><code class="sig-name descname">-d</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--database</code><code class="sig-prename descclassname"> &lt;database&gt;</code><a class="headerlink" href="#cmdoption-python-m-mindsweeper.api-run-server-d" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">API server</a><ul>
+<li><a class="reference internal" href="#cli">CLI</a><ul>
+<li><a class="reference internal" href="#python-m-mindsweeper-api">python -m mindsweeper.api</a><ul>
+<li><a class="reference internal" href="#python-m-mindsweeper-api-run-server">run-server</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="cli.html"
+                        title="next chapter">CLI</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/api.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="cli.html" title="CLI"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Mindsweeper  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Bar Amir.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.4.
+    </div>
+  </body>
+</html>

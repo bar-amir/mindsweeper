@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Readers &#8212; Mindsweeper  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Saver" href="saver.html" />
+    <link rel="prev" title="Parsers" href="parsers.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="saver.html" title="Saver"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="parsers.html" title="Parsers"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Mindsweeper  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-mindsweeper.readers">
+<span id="readers"></span><h1>Readers<a class="headerlink" href="#module-mindsweeper.readers" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="mindsweeper.readers.Reader">
+<em class="property">class </em><code class="sig-prename descclassname">mindsweeper.readers.</code><code class="sig-name descname">Reader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.readers.Reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Convert to JSON messages stored in <cite>path</cite> and iterates through them.
+Readers use reader-functions to handle the file in <cite>path</cite>.
+Each reader-function handles a different file format,
+which it identifies according to the file’s extension.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mindsweeper.readers.find_proto_module">
+<code class="sig-prename descclassname">mindsweeper.readers.</code><code class="sig-name descname">find_proto_module</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fmt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.readers.find_proto_module" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return module generated for handling <cite>fmt</cite> protobufs.
+Returns <cite>None</cite> if not found</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mindsweeper.readers.find_reader">
+<code class="sig-prename descclassname">mindsweeper.readers.</code><code class="sig-name descname">find_reader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.readers.find_reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the reader-function that reads <cite>path</cite>.
+Returns <cite>None</cite> if not found.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mindsweeper.readers.proto_reader">
+<code class="sig-prename descclassname">mindsweeper.readers.</code><code class="sig-name descname">proto_reader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.readers.proto_reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used to decorate reader-functions that reads protobuf files.
+These reader functions could assist <cite>_pb2.py</cite> files, generated
+by the gRPC module.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mindsweeper.readers.read_to_files">
+<code class="sig-prename descclassname">mindsweeper.readers.</code><code class="sig-name descname">read_to_files</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">output</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mindsweeper.readers.read_to_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write messages read from <cite>path</cite> to individual files, and store them in <cite>output</cite>. When <cite>output</cite> is not given, files would be saved under <cite>tests/messages</cite>.</p>
+</dd></dl>
+
+<div class="section" id="adding-readers-supporting-other-file-formats">
+<h2>Adding readers (supporting other file formats)<a class="headerlink" href="#adding-readers-supporting-other-file-formats" title="Permalink to this headline">¶</a></h2>
+<p>Reader receive a reader-function, which supports the reading of a single file format. To support other formats, new reader-functions should be implemented:</p>
+<ul class="simple">
+<li><p>Write a reader-function under the name of the file format it reads (the file’s format is identified by the file’s extension). Save the reader function in a file called <code class="docutils literal notranslate"><span class="pre">reader_&lt;file-format&gt;</span></code> and put it under the readers module directory.</p></li>
+<li><p>The reader-function is actually a generator. It receives a path to a file and yields every message it reads in a format the server supports.</p></li>
+<li><p>The first yielded message has to be a message of type ‘user’.</p></li>
+<li><p>File formats are identified by the file’s extension, so for example, a reader-function that supports the reading of a Mind file, would accept files that ends with <code class="docutils literal notranslate"><span class="pre">.mind.*</span></code> (it might support different types of compression or encoding). The function would be called <code class="docutils literal notranslate"><span class="pre">mind</span></code> and be saved in a file called <code class="docutils literal notranslate"><span class="pre">reader_mind.py</span></code>.</p></li>
+<li><p>Mind files are supported by default, therefor the framework also supports reading files that use Protocol Buffers. Put your <code class="docutils literal notranslate"><span class="pre">.proto</span></code> file under <cite>readers/proto</cite> and make sure to run <code class="docutils literal notranslate"><span class="pre">scripts/compile-protos.sh</span></code>. Decorate your function with <code class="docutils literal notranslate"><span class="pre">&#64;proto_reader</span></code> and the compiled module will be imported automatically. For an example, look at <code class="docutils literal notranslate"><span class="pre">reader_mind.py</span></code>.</p></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Readers</a><ul>
+<li><a class="reference internal" href="#adding-readers-supporting-other-file-formats">Adding readers (supporting other file formats)</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="parsers.html"
+                        title="previous chapter">Parsers</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="saver.html"
+                        title="next chapter">Saver</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/readers.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="saver.html" title="Saver"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="parsers.html" title="Parsers"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Mindsweeper  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Bar Amir.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.4.
+    </div>
+  </body>
+</html>
