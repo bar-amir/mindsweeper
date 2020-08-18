@@ -10,8 +10,6 @@
   <a title="Documentation Status" href="https://mindsweeper.readthedocs.io/en/latest/?badge=latest"><img src="https://readthedocs.org/projects/mindsweeper/badge/?version=latest"></a>
 </p>
 
-![mindsweeper](https://user-images.githubusercontent.com/28039736/90511423-19dbc080-e165-11ea-9a5a-ff0267b9de35.gif)
-
 ## About
 Final project submission for the course "Advanced Systems Design". (Tel Aviv University, 2020)
 
@@ -23,6 +21,8 @@ The project experiments with several technologies and concepts:
 5. Easy deployment, CI/CD, testing and documentation (Docker, TravisCI, Codecov, pytest, Sphinx, Read the Docs)
 
 Documentation is available [here](https://mindsweeper.readthedocs.io/).
+
+![mindsweeper](https://user-images.githubusercontent.com/28039736/90511423-19dbc080-e165-11ea-9a5a-ff0267b9de35.gif)
 
 ## Prerequisites
 ```
