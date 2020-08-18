@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Mindsweeper" title="Mindsweeper" src="https://user-images.githubusercontent.com/28039736/90513582-8c01d480-e168-11ea-803d-2b80da7d56a9.png" />
+  <img alt="Mindsweeper" title="Mindsweeper" src="https://user-images.githubusercontent.com/28039736/90513688-b2277480-e168-11ea-8a39-bac48fd703f0.png" />
 </p>
 <h3 align="center">
   Mindsweeper
