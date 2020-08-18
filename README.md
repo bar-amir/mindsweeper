@@ -22,7 +22,7 @@ The project experiments with several technologies and concepts:
 
 Documentation is available [here](https://mindsweeper.readthedocs.io/).
 
-![mindsweeper](https://user-images.githubusercontent.com/28039736/90511423-19dbc080-e165-11ea-9a5a-ff0267b9de35.gif)
+![mindsweeper](https://user-images.githubusercontent.com/28039736/90513307-16960400-e168-11ea-8d59-5fb823f412af.gif)
 
 ## Prerequisites
 ```
