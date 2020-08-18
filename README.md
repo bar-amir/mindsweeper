@@ -1,9 +1,9 @@
 <p align="center">
   <img alt="Mindsweeper" title="Mindsweeper" src="https://user-images.githubusercontent.com/28039736/90513688-b2277480-e168-11ea-8a39-bac48fd703f0.png" />
 </p>
-<h3 align="center">
+<h1 align="center">
   Mindsweeper
-</h3>
+</h1>
 <p align="center">
   <a title="Build Status" href="https://travis-ci.com/bar-amir/mindsweeper"><img src="https://travis-ci.com/bar-amir/mindsweeper.svg?branch=master"></a>
   <a title="Codecov" href="https://codecov.io/gh/bar-amir/mindsweeper"><img src="https://codecov.io/gh/bar-amir/mindsweeper/branch/master/graph/badge.svg"></a>
