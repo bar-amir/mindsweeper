@@ -10,6 +10,8 @@
   <a title="Documentation Status" href="https://mindsweeper.readthedocs.io/en/latest/?badge=latest"><img src="https://readthedocs.org/projects/mindsweeper/badge/?version=latest"></a>
 </p>
 
+![mindsweeper](https://user-images.githubusercontent.com/28039736/90511423-19dbc080-e165-11ea-9a5a-ff0267b9de35.gif)
+
 ## About
 Final project submission for the course "Advanced Systems Design". (Tel Aviv University, 2020)
 
