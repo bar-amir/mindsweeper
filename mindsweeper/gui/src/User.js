@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Head from './Head';
-import Header from './Header';
-import Loading from './Loading';
 import Sweep from './Sweep';
 import {
-  // BrowserRouter as Router,
   Switch,
   Route,
   Link,
   useRouteMatch,
   useParams,
 } from "react-router-dom";
-import { Table, Breadcrumb } from 'react-bootstrap';
 
 function User(props) {
   let match = useRouteMatch();
@@ -23,56 +18,111 @@ function User(props) {
   
   useEffect(() => {
     async function fetchData() {
-      const result_user = await axios(
+      const res_user = await axios.get(
         `http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/users/${userId}`,
-      )
-      const result_sweeps = await axios(
-        `http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/users/${userId}/sweeps`,
       );
-      setUser(result_user.data);
-      setSweeps(result_sweeps.data);
+      setUser(res_user.data);
+      
+      const res_sweeps = await axios.get(
+        `http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/users/${userId}/sweeps`,
+      )
+      .then(function (response) {
+        setSweeps(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+        setSweeps(null);
+      });
+      
+
       setIsLoading(false)
     }
     fetchData();
   }, []);
   if (isLoading) {
-    return (<div><Head /><Loading /></div>);
+    return (<div className="bg"></div>);
   }
   else {
     return (
-      <div>
-        <Switch>
-          <Route path={`${match.path}/sweeps/:sweepId`}>
-            <Sweep user={user} />
-          </Route>
-          <Route path={match.path}>
-            <Head />
-            <Header variant="light" />
-            <Breadcrumb className="m-3">
-              <Breadcrumb.Item><Link title="Users" to="/users">Users</Link></Breadcrumb.Item>
-              <Breadcrumb.Item active>{user.username}</Breadcrumb.Item>
-            </Breadcrumb>
-            <Table striped bordered hover>
+      <Switch>
+        <Route path={`${match.path}/sweeps/:sweepId`}>
+          <Sweep user={user} />
+        </Route>
+        <Route path={match.path}>
+          <div className="details">
+            <div className="table-row">
+              <div className="table-block filler">
+                <div className="table-block-head"></div>
+                <div className="table-block-data"></div>
+              </div>
+              <div className="table-block">
+                <div className="table-block-head">Test subject number</div>
+                <div className="table-block-data">№ {user.userId}</div>
+              </div>
+              <div className="table-block space">
+                <div className="table-block-head"></div>
+                <div className="table-block-data"></div>
+              </div>
+              <div className="table-block">
+                <div className="table-block-head">Test subject name</div>
+                <div className="table-block-data">{user.username}</div>
+              </div>
+              <div className="table-block filler">
+                <div className="table-block-head"></div>
+                <div className="table-block-data"></div>
+              </div>
+            </div>
+            <div className="table-row">
+              <div className="table-block filler">
+                <div className="table-block-head"></div>
+                <div className="table-block-data"></div>
+              </div>
+              <div className="table-block">
+                <div className="table-block-head">Birthdate</div>
+                <div className="table-block-data">{user.birthday}</div>
+              </div>
+              <div className="table-block space">
+                <div className="table-block-head"></div>
+                <div className="table-block-data"></div>
+              </div>
+              <div className="table-block">
+                <div className="table-block-head">Gender</div>
+                <div className="table-block-data">{user.gender}</div>
+              </div>
+              <div className="table-block space">
+                <div className="table-block-head"></div>
+                <div className="table-block-data"></div>
+              </div>
+              <div className="table-block">
+                <div className="table-block-head">Number of sweeps</div>
+                <div className="table-block-data">{sweeps.length}</div>
+              </div>
+              <div className="table-block filler">
+                <div className="table-block-head"></div>
+                <div className="table-block-data"></div>
+              </div>
+            </div>
+          </div>
+          {sweeps ? 
+            <table className="double">
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Date taken</th>
-                  <th>Snapshots Count</th>
+                  <th>Sweep date</th>
+                  <th>Sweep name</th>
                 </tr>
               </thead>
               <tbody>
                 {sweeps.map((sweep, index) => (
                   <tr key={sweep.sweepId}>
-                    <td>{index + 1}</td>
-                    <td><Link title="Sweep" to={`${user.userId}/sweeps/${sweep.sweepId}`}>{sweep.start}</Link></td>
-                    <td>{sweep.numOfSnapshots}</td>
+                    <td><Link title={sweep.name} to={`${user.userId}/sweeps/${sweep.sweepId}`}>{sweep.startDate}</Link></td>
+                    <td><Link title={sweep.name} to={`${user.userId}/sweeps/${sweep.sweepId}`}>{sweep.name}</Link></td>
                   </tr>
                 ))}
               </tbody>
-            </Table>
-          </Route>
-        </Switch>
-      </div>
+            </table>
+          : <div class="wrapper">No sweeps to show.</div> }
+        </Route>
+      </Switch>
     );
   }
 }

@@ -1,20 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Head from './Head';
-import Header from './Header';
-import Loading from './Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExpandArrowsAlt, faSyncAlt } from '@fortawesome/free-solid-svg-icons'
+import { faLongArrowAltLeft, faBroom, faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons'
 import {
-  // BrowserRouter as Router,
-  // Switch,
-  // Route,
-  Link,
-  // useRouteMatch,
   useParams
 } from "react-router-dom";
-import './Snapshot.scss';
-import { Breadcrumb, ProgressBar, Card, ListGroup, ListGroupItem, Button, OverlayTrigger, Popover } from 'react-bootstrap';
+import { HashLink as Link } from 'react-router-hash-link';
 
 const API = `http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}`
 
@@ -25,7 +16,7 @@ function normalizeFeelings(value){
 function Snapshot(props) {
   let { userId, snapshotId } = useParams();
   const [snapshot, setSnapshot] = useState({});
-  const [pose, setPose] = useState({});
+  // const [pose, setPose] = useState({});
   const [feelings, setFeelings] = useState({});
   const [colorImage, setColorImage] = useState({});
   const [depthImage, setDepthImage] = useState({});
@@ -33,39 +24,59 @@ function Snapshot(props) {
 
   useEffect(() => {
     async function fetchData() {
-      const res_snapshot = await axios(
+      const res_snapshot = await axios.get(
         `http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/users/${userId}/snapshots/${snapshotId}`,
       );
       setSnapshot(res_snapshot.data);
   
-      var res_colorImage = await axios(
+      var res_colorImage = await axios.get(
         `http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/users/${userId}/snapshots/${snapshotId}/colorImage`,
-      );
-      res_colorImage.data.data = API + res_colorImage.data.data
-      setColorImage(res_colorImage.data);
+      )
+      .then(function (response) {
+        response.data.data = API + response.data.data
+        setColorImage(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+        setColorImage(null);
+      });
   
-      var res_depthImage = await axios(
+      var res_depthImage = await axios.get(
         `http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/users/${userId}/snapshots/${snapshotId}/depthImage`,
-      );
-      res_depthImage.data.data = API + res_depthImage.data.data
-      setDepthImage(res_depthImage.data);
+      )
+      .then(function (response) {
+        response.data.data = API + response.data.data
+        setDepthImage(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+        setDepthImage(null);
+      });
+      
   
-      var res_pose = await axios(
-        `http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/users/${userId}/snapshots/${snapshotId}/pose`,
-      );
-      setPose(res_pose.data)
+      // var res_pose = await axios(
+      //   `http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/users/${userId}/snapshots/${snapshotId}/pose`,
+      // );
+      // setPose(res_pose.data)
   
       var res_feelings = await axios(
-        `http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/users/${userId}/snapshots/${snapshotId}/feelings`,
-      );
-      setFeelings(res_feelings.data)
+        `http://${process.env.REACT_APP_API_HOST}:${process.env.REACT_APP_API_PORT}/users/${userId}/snapshots/${snapshotId}/feelings`, { timeout: 5000 }
+      )
+      .then(function (response) {
+        setFeelings(response.data)
+      })
+      .catch(function (error) {
+        console.log(error);
+        setFeelings(null)
+      });
+      
       setIsLoading(false)
     }
     fetchData();
   }, []);
 
   if (isLoading) {
-    return (<div><Head /><Header /><Loading /></div>)
+    return (<div className="bg"></div>)
   }
   else {    
     var i;
@@ -82,69 +93,49 @@ function Snapshot(props) {
         break;
       }
     }
-    
-    const popOverTranslation = (
-      <Popover id="popover-translation">
-        <Popover.Title as="h3">Translation</Popover.Title>
-        <Popover.Content>
-          <strong>X:</strong> {pose.translation.x}<br />
-          <strong>Y:</strong> {pose.translation.y}<br />
-          <strong>Z:</strong> {pose.translation.z}<br />
-        </Popover.Content>
-      </Popover>
-    )
 
-    const popOverRotation = (
-      <Popover id="popover-rotation">
-        <Popover.Title as="h3">Rotation</Popover.Title>
-        <Popover.Content>
-          <strong>X:</strong> {pose.rotation.x}<br />
-          <strong>Y:</strong> {pose.rotation.y}<br />
-          <strong>Z:</strong> {pose.rotation.z}<br />
-          <strong>W:</strong> {pose.rotation.w}<br />
-        </Popover.Content>
-      </Popover>
-    )
+    var meters = '';
+    if (feelings) {
+      meters = <div className="meters">
+                {feelings.hunger ?
+                  <div className="meter-box">
+                    <div className="meter" style={{width: normalizeFeelings(feelings.hunger) + '%'}}><span>Hunger</span></div>
+                  </div>
+                : ''}
+                {feelings.thirst ?
+                  <div className="meter-box">
+                    <div className="meter" style={{width: normalizeFeelings(feelings.thirst) + '%'}}><span>Thirst</span></div>
+                  </div>
+                  : ''}
+                {feelings.exhaustion ?
+                  <div className="meter-box">
+                    <div className="meter" style={{width: normalizeFeelings(feelings.exhaustion) + '%'}}><span>Exhaustion</span></div>
+                  </div>
+                  : ''}
+                {feelings.happiness ?
+                  <div className="meter-box">
+                    <div className="meter" style={{width: normalizeFeelings(feelings.happiness) + '%'}}><span>Happiness</span></div>
+                  </div>
+                  : ''}
+              </div>
+    }
 
     return (
-      <div>
-        <Head />
-        <div className="snapshot color-image" style={{backgroundImage: `url(${colorImage.data})`}}>
-          <Header variant="light" className="snapshot-header" />
-          <Card className="snapshot-card m-3" style={{ width: '18rem' }}>
-            <Card.Img title="Depth image" variant="top" src={depthImage.data} />
-            <ListGroup className="list-group-flush">
-              <ListGroupItem title="Date taken">{snapshot.datetime}</ListGroupItem>
-              <ListGroupItem>
-                <OverlayTrigger rootClose="true" trigger="click" placement="top" overlay={popOverTranslation}>
-                  <Button title="Translation" className="mr-1">
-                    <FontAwesomeIcon icon={faExpandArrowsAlt}/>
-                  </Button>
-                </OverlayTrigger>
-                <OverlayTrigger rootClose="true" trigger="click" placement="top" overlay={popOverRotation}>
-                  <Button title="Rotation">
-                    <FontAwesomeIcon icon={faSyncAlt}/>
-                  </Button>
-                </OverlayTrigger>
-              </ListGroupItem>
-              <ListGroupItem>
-                <ProgressBar title={feelings.hunger} className="mb-1" now={normalizeFeelings(feelings.hunger)} label="Hunger" />
-                <ProgressBar title={feelings.thirst} className="mb-1" now={normalizeFeelings(feelings.thirst)} label="Thirst" />
-                <ProgressBar title={feelings.exhaustion} className="mb-1" now={normalizeFeelings(feelings.exhaustion)} label="Exhaustion" />
-                <ProgressBar title={feelings.happiness} now={normalizeFeelings(feelings.happiness)} label="Happiness" />
-              </ListGroupItem>
-            </ListGroup>
-            <Card.Body>
-              <div className="d-flex justify-content-between">
-                <div>
-                {prevId ? <Card.Link href="#"><Link title="Previous snapshot" to={`../snapshots/${prevId}`}>Previous</Link></Card.Link> : ''}
-                {nextId ? <Card.Link href="#"><Link title="Next snapshot" to={`../snapshots/${nextId}`}>Next</Link></Card.Link> : ''}
-                </div>
-                <Card.Link href="#"><Link title="Return to sweep" to={`/users/${props.user.userId}/sweeps/${props.sweep.sweepId}`}>Return</Link></Card.Link>
-              </div>
-            </Card.Body>
-          </Card>
+      <div className="bg">
+        <div className="info">
+          {depthImage ?
+          <img alt="Depth map" src={depthImage.data} /> :
+          ''}
+          {meters}
+          <div className="buttons">
+            {prevId ? <Link to={`../snapshots/${prevId}`} className="button"><span><FontAwesomeIcon className="icon" icon={faLongArrowAltLeft}/><br />Prev</span></Link> : <a className="button deactivate"><span><FontAwesomeIcon className="icon" icon={faLongArrowAltLeft}/><br />Prev</span></a>}
+            {nextId ? <Link to={`../snapshots/${nextId}`} className="button"><span><FontAwesomeIcon className="icon" icon={faLongArrowAltRight}/><br />Next</span></Link> : <a className="button deactivate"><span><FontAwesomeIcon className="icon" icon={faLongArrowAltRight}/><br />Next</span></a>}
+            <Link to={`/users/${props.user.userId}/sweeps/${props.sweep.sweepId}#${snapshot.snapshotId}`} className="button back"><span><FontAwesomeIcon className="icon" icon={faBroom}/><br />Back to sweep</span></Link>
+          </div>
         </div>
+        {colorImage ?
+          <div className="snapshot color-image" style={ {backgroundImage: `url(${colorImage.data})`}}></div>
+        : ''}
       </div>
     );
   }

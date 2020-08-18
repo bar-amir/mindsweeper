@@ -1,4 +1,17 @@
+import datetime
 import pymongo
+
+
+def get_part_of_day(hour):
+    return (
+        "morning" if 5 <= hour <= 11
+        else
+        "afternoon" if 12 <= hour <= 17
+        else
+        "evening" if 18 <= hour <= 22
+        else
+        "night"
+    )
 
 
 class MongoDB:
@@ -29,11 +42,18 @@ class MongoDB:
         self.db['users'].update_one(query, values, upsert=True)
 
     def upsert_sweep(self, msg):
-        sweep_id = f"sw{msg['userId']}{msg['datetime']}"
+        # Reminder: datetime, sweepStart and sweepEnd are actually saved as timestamp integers.
+        sweep_id = f"sw{msg['userId']}{msg['data']['sweepStart']}"
+        
+        start_obj = datetime.datetime.fromtimestamp(msg['data']['sweepStart']/1000)
+        part_of_day = get_part_of_day(start_obj.hour).capitalize()
+        name = start_obj.strftime('%A') + ' ' + part_of_day
+
         sweep = {
             '_id': sweep_id,
             'userId': msg['userId'],
             'datetime': msg['datetime'],
+            'name': name,
             'sweepStart': msg['data']['sweepStart'],
             'sweepEnd': msg['data']['sweepEnd'],
             'numOfSnapshots': msg['data']['numOfSnapshots']

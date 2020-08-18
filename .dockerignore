@@ -1,4 +1,5 @@
 docs/
+data/
 .env/
 .pytest_cache/
 docs/

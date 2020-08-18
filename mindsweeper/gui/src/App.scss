@@ -1,9 +1,358 @@
-@import "~bootstrap/scss/bootstrap";
+// @import "~bootstrap/scss/bootstrap";
+@import url("https://use.typekit.net/kjv7pmz.css");
+
+// body {
+//   font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+// }
+
+$family-1: ivypresto-headline, serif;
+$weight-1: 200;
+$family-2: roc-grotesk, sans-serif;
+$weight-2: 800;
+$border-width: 4px;
+$color-1: black;
+$color-2: white;
+$radius: 20px;
+$size-1: 1.3rem;
+$size-2: 2rem;
+$size-3: 3rem;
+$head-height: 20px;
+
+html {
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+
+  ::selection {
+    color: white;
+    background-color: black;
+  }
+
+  ::-webkit-scrollbar {
+    width: 30px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: white;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: black;
+  }
+}
 
 body {
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+  font-family: $family-1;
+  font-weight: $weight-1;
+  font-style: normal;
 }
 
-.nav-link-active {
-  font-weight: bold;
+p {
+  font-style: normal;
+  font-size: 4rem;
+  padding: 0px 20vw 80px 20vw;
+  margin: 0; 
 }
+
+ul.links {
+  display: flex;
+  list-style: none;
+  padding: 0;
+
+  li {
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+
+    a {
+      color: $color-1;
+      font-family: $family-2;
+      font-weight: $weight-2;
+      font-size: $size-2;
+      border: $border-width solid $color-1;
+      border-radius: $radius;
+      height: 40px;
+      padding: 20px;
+      text-decoration: none;
+
+      &:hover {
+        color: $color-2;
+        background: $color-1;
+      }
+    }
+  }
+}
+
+.details {
+  margin-bottom: 60px;
+
+  .table-row {
+    display: flex;
+    align-items: top;
+    justify-content: center;
+  
+    &:not(:last-child) {
+      margin-bottom: 20px;
+    }
+  
+    .table-block {
+      .table-block-head {
+        border-bottom: 1px solid $color-1;
+        font-family: $family-2;
+        font-weight: 800;
+        height: $head-height;
+        text-align: center;
+        font-size: $size-1;
+      }
+  
+      .table-block-data {
+        font-size: $size-2;
+        text-align: center;
+
+        a {
+          color: inherit;
+          text-decoration: underline;
+        }
+      }
+      &.space {
+        width: 50px;
+      }
+    
+      &.filler {
+        flex-grow: 1;
+      }
+    }
+  }
+}
+
+table.double { /* Good for 2-column table */
+  width: 100%;
+  border-collapse: collapse; /* Allow tr border */
+
+  th {
+    font-family: $family-2;
+    font-weight: $weight-2;
+    font-size: $size-1;
+    height: $head-height;
+  }
+
+  tr {
+    border-bottom: 1px solid $color-1;
+  }
+
+  tbody tr:hover {
+    background: $color-1;
+    color: $color-2;
+  }
+
+  td {
+    font-style: normal;
+    font-size: $size-3;
+
+    a { /* Entire tr clickable */
+      display: block;
+      width: 100%;
+      color: inherit;
+      text-decoration: none;
+    }
+  }
+
+  td:nth-child(1) a, th:nth-child(1) {
+    padding: 0 0 0 20vw;
+    text-align: left;
+    box-sizing: border-box;
+  }
+
+  td:nth-child(2) a, th:nth-child(2) {
+    padding: 0 20vw 0 0;
+    text-align: right;
+    box-sizing: border-box;
+  }
+}
+
+.snapshot.color-image {
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+nav.snapshot-header,
+.snapshot-card {
+  .list-group, .list-group-item {
+      background-color: transparent;
+  }
+  img {
+      user-select: none;
+      -webkit-user-select: none;
+  }
+  background-color: rgba(233, 236, 239, 0.7) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.bg {
+  position: absolute;
+  background:$color-1;
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.info { /* Snapshot info box */
+  user-select: none;
+  width: 400px;
+  position: absolute;
+  background:white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 20px;
+  left: 20px;
+  z-index: 3;
+
+  img {
+    width: 100%;
+    height: auto;
+    border: $border-width solid $color-1;
+    border-radius: $radius;
+    margin-bottom: 8px;
+  }
+}
+
+.meters {
+  width: 100%;
+  
+  .meter-box {
+    width: 100%;
+    margin-bottom: 8px;
+    height: 50px;
+    border: $border-width solid $color-1;
+    border-radius: $radius;
+    box-sizing: border-box;
+    position: relative;
+    padding: 0;
+    
+    .meter {
+      float: left;
+      background-color: $color-1;
+      height: 100%;
+      border-radius: 15px;
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+  
+      span {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        color: $color-2;
+        mix-blend-mode: exclusion;
+        text-align: center; 
+        font-family: $family-2;
+        font-weight: $weight-2;
+        font-size: $size-2;
+      }
+    }
+  }
+}
+
+.buttons {
+  display: flex;
+  z-index: 4;
+  width: 100%;
+
+  .button {
+    background-color: $color-1;
+    display: inline-block;
+    min-width: 100px;
+    height: 100px;
+    border-radius: $radius;
+    font-family: $family-2;
+    font-weight: $weight-2;
+    font-size: $size-1;
+    color: inherit;
+    text-decoration: none;
+
+    &.deactivate {
+      background-color: gray;
+      color: gray;
+
+      &:hover {
+        cursor: not-allowed;
+
+        span {
+          color: gray;
+          background-color: $color-2;
+        }
+      }
+    }
+    
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+  
+    &.back {
+      width: 100%;
+      flex-grow: 2;
+    }
+  
+    span {
+      display: block;
+      background-color: $color-2;
+      width: 80%;
+      height: 80%;
+      border-radius: 15px;
+      position: relative;
+      left: 10px;
+      top: 5px;
+      box-sizing: border-box;
+      padding: 10px;
+    }
+  
+    & span:hover, &:hover span {
+      color: $color-2;
+      background-color: $color-1;
+    }
+  }
+}
+
+.snapshot {
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand {
+  font-family: anisette-std, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 2.3rem;
+  margin-bottom: 40px;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      color: red;
+    }
+  }
+}
+

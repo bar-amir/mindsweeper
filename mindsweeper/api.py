@@ -50,15 +50,21 @@ def get_sweeps(user_id):
     collection = db.find('sweeps', {'userId': int(user_id)})
     result = []
     for sweep in collection:
+        start_obj = datetime.datetime.fromtimestamp(
+                int(sweep['sweepStart'])/1000)
+        end_obj = datetime.datetime.fromtimestamp(
+                int(sweep['sweepEnd'])/1000)
         s = {
             'sweepId': sweep['_id'],
-            'start': datetime.datetime.fromtimestamp(
-                int(sweep['sweepStart'])/1000).strftime(
+            'start': start_obj.strftime(
                     '%Y-%m-%d %H:%M:%S.%f'),
-            'end': datetime.datetime.fromtimestamp(
-                int(sweep['sweepEnd'])/1000).strftime(
+            'end': end_obj.strftime(
                     '%Y-%m-%d %H:%M:%S.%f'),
-            'numOfSnapshots': sweep['numOfSnapshots']
+            'numOfSnapshots': sweep['numOfSnapshots'],
+            'name': sweep['name'],
+            'startDate': datetime.datetime.strftime(start_obj, "%Y-%m-%d"),
+            'startTime': datetime.datetime.strftime(start_obj, "%I:%M %p"),
+            'duration': str(end_obj - start_obj).split('.')[0],
             }
         result.append(s)
     return json.dumps(result)
@@ -69,6 +75,10 @@ def get_sweeps(user_id):
 def get_sweep(user_id, sweep_id):
     '''Return the sweep `sweep_id  of the user `user_id` at `/users/<user_id>/sweeps/<sweep_id>`.'''
     sweep = db.find_one('sweeps', {'_id': sweep_id})
+    start_obj = datetime.datetime.fromtimestamp(
+                int(sweep['sweepStart'])/1000)
+    end_obj = datetime.datetime.fromtimestamp(
+            int(sweep['sweepEnd'])/1000)
     result = {
         'sweepId': sweep['_id'],
         'start': datetime.datetime.fromtimestamp(
@@ -77,7 +87,11 @@ def get_sweep(user_id, sweep_id):
         'end': datetime.datetime.fromtimestamp(
             int(sweep['sweepEnd'])/1000).strftime(
                 '%Y-%m-%d %H:%M:%S.%f'),
-        'numOfSnapshots': sweep['numOfSnapshots']
+        'numOfSnapshots': sweep['numOfSnapshots'],
+        'name': sweep['name'],
+        'startDate': datetime.datetime.strftime(start_obj, "%Y-%m-%d"),
+        'startTime': datetime.datetime.strftime(start_obj, "%I:%M %p"),
+        'duration': str(end_obj - start_obj).split('.')[0]
     }
     return json.dumps(result)
 
@@ -119,7 +133,7 @@ def get_user(user_id):
         'username': user['username'],
         'birthday': datetime.datetime.fromtimestamp(
             user['birthday']).strftime('%Y-%m-%d'),
-        'gender:': gender[user['gender']]
+        'gender': gender[user['gender']]
     }
     return json.dumps(u)
 

@@ -1,3 +1,4 @@
+import traceback
 from .databases import MongoDB
 from ..utils.config import DEFAULT_DATABASE
 
@@ -12,16 +13,19 @@ class Database:
 
     def upsert(self, msg):
         t = msg['type']
-        if t == 'user':
-            self.driver.upsert_user(msg)
-        elif t == 'sweep':
-            self.driver.upsert_sweep(msg)
-        elif t in ['colorImage', 'depthImage', 'pose', 'feelings']:
-            self.driver.upsert_result(msg)
-        else:
-            raise ValueError(
-                f"Database does not support message type {t}")
-        print(f"Created new entry {msg['type']}")
+        try:
+            if t == 'user':
+                self.driver.upsert_user(msg)
+            elif t == 'sweep':
+                self.driver.upsert_sweep(msg)
+            elif t in ['colorImage', 'depthImage', 'pose', 'feelings']:
+                self.driver.upsert_result(msg)
+            else:
+                raise ValueError(
+                    f"Database does not support message type {t}")
+            print(f"Created new entry {msg['type']}")
+        except Exception:
+            traceback.print_exc()
 
     def find(self, collection, query, projection=None):
         return self.driver.find(collection, query, projection)
