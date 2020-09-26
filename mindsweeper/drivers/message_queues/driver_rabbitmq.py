@@ -2,7 +2,7 @@ import bson
 import click
 import pika
 import time
-from ...utils import aux
+from ...utils import auxiliary
 from urllib.parse import urlparse
 
 
@@ -30,7 +30,7 @@ class RabbitMQ:
                 self.channel.exchange_declare(
                     exchange='ms_exchange',
                     exchange_type='topic')
-                for parser_name, msg_types in aux.get_parsers():
+                for parser_name, msg_types in auxiliary.get_parsers():
                     self.channel.queue_declare(queue=parser_name)
                     for t in msg_types:
                         self.channel.queue_bind(

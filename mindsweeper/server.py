@@ -5,7 +5,7 @@ import click
 import os
 import struct
 from flask import Flask, request
-from .utils import aux
+from .utils import auxiliary
 from .utils.config import PROJECT_ROOT
 from .drivers import MessageQueue
 
@@ -49,7 +49,7 @@ def upload(msg, publish):
             msg['data']['dataLen'] = len(floatlist)
             msg['data']['data'] = struct.pack(
                 '%sf' % len(floatlist), *floatlist)
-        dir_name = aux.camel_to_snake(msg['type'])
+        dir_name = auxiliary.camel_to_snake(msg['type'])
         dir_path = PROJECT_ROOT / f"media/{dir_name}s/{str(msg['userId'])}/bin"
         file_path = dir_path / f"{msg['datetime']}.dat"
         os.makedirs(dir_path, exist_ok=True)
@@ -58,7 +58,7 @@ def upload(msg, publish):
         del msg['data']['data']
         msg['data']['path'] = str(file_path)
         f.close()
-    if msg['type'] in aux.get_interesting_types():
+    if msg['type'] in auxiliary.get_interesting_types():
         msg['status'] = 'unparsed'
     else:
         msg['status'] = 'ready'

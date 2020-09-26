@@ -12,7 +12,7 @@ Configuration file
 Auxiliary functions
 ---------------------------------------
 
-.. automodule:: mindsweeper.utils.aux
+.. automodule:: mindsweeper.utils.auxiliary
    :members:
    :undoc-members:
    :show-inheritance:

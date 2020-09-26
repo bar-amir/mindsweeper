@@ -7,7 +7,7 @@ import json
 from flask import Flask, send_file
 from flask_cors import CORS, cross_origin
 from .drivers.database import Database
-from .utils import aux
+from .utils import auxiliary
 
 
 app = Flask(__name__)
@@ -178,7 +178,7 @@ def get_user_snapshot(user_id, snapshot_id):
 def get_result(user_id, snapshot_id, result_name):
     '''Return the result `result_name` of `user_id`'s snapshot, `snapshot_id`, at `/users/<user_id>/snapshots/<snapshot_id>/<result_name>`.'''
     snapshot = db.find_one('snapshots', {'_id': snapshot_id})
-    name = aux.snake_to_lower_camel(result_name, '-')
+    name = auxiliary.snake_to_lower_camel(result_name, '-')
     if name in snapshot['results']:
         result = snapshot['results'][name]
         if name in ['colorImage', 'depthImage']:
@@ -192,7 +192,7 @@ def get_result(user_id, snapshot_id, result_name):
 def get_result_data(user_id, snapshot_id, result_name):
     '''Return images (either color images or depth images) that are saved to disk, at `/users/<user_id>/snapshots/<snapshot_id>/<result_name>/data`.'''
     snapshot = db.find_one('snapshots', {'_id': snapshot_id})
-    name = aux.snake_to_lower_camel(result_name, '-')
+    name = auxiliary.snake_to_lower_camel(result_name, '-')
     if name in snapshot['results']:
         if name in ['colorImage', 'depthImage']:
             return send_file(

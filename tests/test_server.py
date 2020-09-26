@@ -3,7 +3,7 @@ import shutil
 from pathlib import Path
 from . import msg_gen as mg
 from mindsweeper import server
-from mindsweeper.utils import aux
+from mindsweeper.utils import auxiliary
 
 
 HOST = '127.0.0.1'
@@ -22,7 +22,7 @@ def upload(msg):
         return
     response = server.upload(msg, publish)
     assert response == 'OK'
-    if msg['type'] in aux.get_interesting_types():
+    if msg['type'] in auxiliary.get_interesting_types():
         assert msg['status'] == 'unparsed'
     else:
         assert msg['status'] == 'ready'

@@ -5,7 +5,7 @@ import bson
 import click
 from pathlib import Path
 from ..drivers import MessageQueue
-from ..utils.aux import find_parser
+from ..utils.auxiliary import find_parser
 
 
 def run_parser(parser_name, message_queue_url=None):
